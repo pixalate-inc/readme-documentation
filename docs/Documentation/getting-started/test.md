@@ -18,7 +18,7 @@ The complete list of Pixalate's [MRC Accredited Metrics](https://www.pixalate.co
 * Display SIVT Detection & Filtration
 * Video Impressions
 * Video SIVT Detection & Filtration
-* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics) [\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
+* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics)
 
 #### **Mobile Web**
 
@@ -27,7 +27,7 @@ The complete list of Pixalate's [MRC Accredited Metrics](https://www.pixalate.co
 * Display SIVT Detection & Filtration
 * Video Impressions
 * Video SIVT Detection & Filtration
-* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics) [\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
+* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics)
 
 #### **Mobile Application (In-App)**
 
@@ -36,21 +36,15 @@ The complete list of Pixalate's [MRC Accredited Metrics](https://www.pixalate.co
 * Display SIVT Detection & Filtration
 * Video Impressions
 * Video SIVT Detection & Filtration
-* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics) [\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
+* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics)
 
 #### **Connected-TV (CTV)**
 
-* Display Ad Counts/Impressions [\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
-* Display SIVT Detection & Filtration [\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
+* Display Ad Counts/Impressions
+* Display SIVT Detection & Filtration
 * Video Impressions
-* Video SIVT Detection & Filtration [\*\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-ott-invalid-traffic-detection-filtration)
-* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics) [\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
-
-***
-
-***
-
-<br />
+* Video SIVT Detection & Filtration
+* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics)
 
 ***
 
@@ -58,13 +52,13 @@ The complete list of Pixalate's [MRC Accredited Metrics](https://www.pixalate.co
 
 * [MRC Accredited Measurement Areas](https://info.pixalate.com/mrc-accreditation-areas)
 * [MRC Accredited Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-metrics)
-* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics) [\*\*\*\*\*](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
+* [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics)
 
 ***
 
 #### **Pixalate Disclaimer – Products**
 
-Invalid traffic, viewability, and other designations that may be present in applicable Pixalate products and materials, including Pixalate Analytics, Pre-Bid Blocking Lists, and Media Rating Terminal, reflect Pixalate’s opinions with respect to factors that Pixalate believes may be useful to our clients. While grounded in Pixalate’s proprietary technology and analytics (which Pixalate evaluates and updates continuously), these designations are merely Pixalate’s opinions (i.e., neither facts nor guarantees). 
+Invalid traffic, viewability, and other designations that may be present in applicable Pixalate products and materials, including Pixalate Analytics, Pre-Bid Blocking Lists, and Media Rating Terminal, reflect Pixalate’s opinions with respect to factors that Pixalate believes may be useful to our clients. While grounded in Pixalate’s proprietary technology and analytics (which Pixalate evaluates and updates continuously), these designations are merely Pixalate’s opinions (i.e., neither facts nor guarantees).
 
 As used in the applicable Pixalate products and materials, and:
 
