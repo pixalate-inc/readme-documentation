@@ -13,8 +13,6 @@ icon: 🏛️
 metadata:
   robots: index
 ---
-Welcome to Pixalate’s MRC Accreditation home page. Refer to the below details and the section’s child pages to find answers to common questions: (1) Pixalate’s overall involvement in the MRC Accreditation process, (2) Pixalate’s current MRC Accredited Measurement Areas, (3) Pixalate’s MRC Accredited Metrics, and (4) Pixalate’s MRC Accredited Server-Side-Ad-Insertion SSAI Measurement Metrics.
-
 ![8770ad33-e52f-4c98-8b31-c73c5335a0bb](https://f.hubspotusercontent40.net/hubfs/2364596/8770ad33-e52f-4c98-8b31-c73c5335a0bb.png)
 
 ### **What Accreditation Means**
