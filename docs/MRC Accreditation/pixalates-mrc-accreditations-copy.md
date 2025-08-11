@@ -1,43 +1,639 @@
 ---
-title: Pixalate's MRC Accreditation(s) (COPY)
-excerpt: >-
-  Welcome to Pixalate’s MRC Accreditation home page. Refer to the below details
-  and the section’s child pages to find answers to common questions: (1)
-  Pixalate’s overall involvement in the MRC Accreditation process, (2)
-  Pixalate’s current MRC Accredited Measurement Areas, (3) Pixalate’s MRC
-  Accredited Metrics, and (4) Pixalate’s MRC Accredited Server-Side-Ad-Insertion
-  SSAI Measurement Metrics
+title: MRC Accredited Metrics
 deprecated: false
 hidden: false
 icon: 🏛️
 metadata:
   robots: index
 ---
-![8770ad33-e52f-4c98-8b31-c73c5335a0bb](https://f.hubspotusercontent40.net/hubfs/2364596/8770ad33-e52f-4c98-8b31-c73c5335a0bb.png)
+#### Pixalate MRC Accreditation(s):
 
-### **What Accreditation Means**
+* (20+) MRC Accredited Measurement Areas
 
-The *Analytics Platform* of *Pixalate, Inc.* has been accredited by the Media Rating Council (MRC) across various [measurement metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-metrics) and [MRC Accredited Measurement Areas](https://www.pixalate.com/knowledgebase/mrc-accredited-measurement-areas) since *2015.* To merit continued MRC accreditation of the Service, *Pixalate, Inc.:*
+* (45+) MRC Accredited Reported Metrics\*\*
 
-1. Adheres to the Council’s *Minimum Standards for Media Rating Research*, and any applicable measurement guidelines issued by the Interactive Advertising Bureau and the Mobile Marketing Association;
+  * (12) MRC Accredited Server-Side-Ad-Insertion (SSAI) Measurement Metrics
 
-2. Provides full and complete information to the Council regarding all details of its *Analytics platform* operation(s);
+**Understanding Metric Labeling in Pixalate Reports**
 
-3. Conducts its measurement service substantially in accordance with representations to the subscribers and the Council; and,
+Pixalate aligns its reported metrics with the MRC’s [*Invalid Traffic Guidelines*](https://mediaratingcouncil.org/sites/default/files/Standards/IVT%20Addendum%20Update%20062520.pdf), which define three key reporting tiers:
 
-4. Submits to, and pays the cost of, thorough annual audits of the Service by CPA firms engaged by the MRC.
+* ‘Gross’: Metrics reported before any invalid traffic (IVT) filtration
+* ‘Net’: Metrics reported after filtering general invalid traffic (GIVT)
+* ‘Total Net’: Metrics reported after filtering both general and sophisticated invalid traffic (GIVT & SIVT)
 
-In addition to sizable annual audit charges, *Pixalate, Inc.,* provides office and file space for MRC auditors, as well as considerable staff and computer time involved in various aspects of these inspections.
+It’s important to distinguish that Pixalate uses slightly different labelling while maintaining alignment with MRC definitions:
 
-*Further information about MRC’s accreditation and auditing procedures can be obtained from:*
+* MRC “Gross” → Labeled as “Gross” in Pixalate metrics
+* MRC “Net” → Appears without a prefix (baseline metric name)
+* MRC “Total Net” → Labeled as “Net” in Pixalate metrics
 
-George W. Ivie - Executive Director - Media Rating Council, Inc.
+### **MRC Accredited Metrics**
 
-420 Lexington Avenue, Suite 343 - New York, NY 10170
+#### ***‘Gross’ Metrics: Prior to filtration of invalid traffic (IVT)***
 
-[Email](mailto:staff@mediaratingcouncil.org): [staff@mediaratingcouncil.org](mailto:staff@mediaratingcouncil.org)
+|\
+**Gross Metrics**
+|
+**MRC Accreditation Status**
+|
+|
+**Desktop**
+|
+**Mobile Web**
+|
+**Mobile App**
+|
+**CTV**
+|
+\| Gross Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross Rendered Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross Rendered Display Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross Rendered Video Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross SSAI Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross SSAI Transparent Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross SSAI Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross SSAI Transparent Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
 
-[MRC Site Homepage](http://www.mediaratingcouncil.org): [www.mediaratingcouncil.org](http://www.mediaratingcouncil.org)
+#### ***‘Net’ Metrics: Post-filtration of general invalid traffic (GIVT)***
+
+|\
+**Net Metrics**
+|
+**MRC Accreditation Status**
+|
+|
+**Desktop**
+|
+**Mobile Web**
+|
+**Mobile App**
+|
+**CTV**\*
+|
+\| Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Rendered Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Rendered Display Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Measured Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Measured Rate % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Views |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Viewability % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Non Views |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Undetermined Imps |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Views % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Non Views % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Undetermined Imps % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| SSAI Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SSAI Transparent Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SSAI Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SSAI Transparent Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+
+\*\*\*\*\*Pixalate does not currently report viewability metrics across CTV environments.
+
+#### ***‘Total Net’ Metrics: Post-filtration of general & sophisticated invalid traffic (GIVT & SIVT)***
+
+|\
+**Total Net Metrics**
+|
+**MRC Accreditation Status**
+|
+|
+**Desktop**
+|
+**Mobile Web**
+|
+**Mobile App**
+|
+**CTV**\*
+|
+\| Net Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net Rendered Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net Rendered Video Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net Rendered Display Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net Measured Impressions |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Measured Rate % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Views |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Viewability % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Non Views % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Non Views |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Undetermined Imps |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Views % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net Undetermined Imps % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+-
+
+|\
+\| Net SSAI Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net SSAI Transparent Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net SSAI Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net SSAI Transparent Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| GIVT Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| GIVT Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SIVT Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SIVT Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+
+\*\*\*\*\*Pixalate does not currently report viewability metrics across CTV environments.
+
+#### ***Server-Side-Ad-Insertion (SSAI) Metrics***
+
+|\
+**Total Net Metrics**
+|
+**MRC Accreditation Status**
+|
+|
+**Desktop**
+|
+**Mobile Web**
+|
+**Mobile App**
+|
+**CTV**
+|
+\| Gross SSAI Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross SSAI Transparent Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross SSAI Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Gross SSAI Transparent Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SSAI Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SSAI Transparent Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SSAI Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| SSAI Transparent Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net SSAI Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net SSAI Transparent Ad Counts |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net SSAI Ad Counts % |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+\| Net SSAI Transparent Ad Counts %  |
+**✓**
+|
+**✓**
+|
+**✓**
+|
+**✓**
+|
+
+\*\*\*\*\*\*Pixalate reports several metrics, beyond those presented above, which are either derived from MRC-accredited metrics or include MRC-accredited data sources. These metrics have not been explicitly cited as MRC-accredited in the listing above due to the potential inclusion of non-accredited data sources (i.e., clicks, conversions) or due to the discrete nature of the metric itself. MRC does not explicitly accredit discrete fraud types although Pixalate’s 40+ distinct fraud types/metrics derive the MRC-accredited ‘net’ and ‘total net’ metrics presented in the listings above.
 
 #### Pixalate Disclaimer - Products
 
