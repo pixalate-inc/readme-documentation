@@ -1,6 +1,6 @@
 ---
 title: "Made For Advertising (MFA) Overview"
-excerpt: ""
+excerpt: "How Pixalate defines Made For Advertising inventory, the scale of its impact on programmatic ad spend, and how MFA relates to invalid traffic."
 deprecated: false
 hidden: false
 metadata:

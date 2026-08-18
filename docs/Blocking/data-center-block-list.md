@@ -1,6 +1,6 @@
 ---
 title: "Data Center Block List"
-excerpt: ""
+excerpt: "Describes the weekly data center IP block list, its CIDR schema and naming convention, and best practices such as checking X-Forwarded-For addresses."
 deprecated: false
 hidden: false
 metadata:

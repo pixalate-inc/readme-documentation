@@ -1,6 +1,6 @@
 ---
 title: "Supply Chain Object Validation and Verification Background"
-excerpt: ""
+excerpt: "What a Supply Chain Object is, how validation differs from verification, and why each node is checked against ads.txt and sellers.json."
 deprecated: false
 hidden: false
 metadata:

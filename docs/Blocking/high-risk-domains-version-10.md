@@ -1,6 +1,6 @@
 ---
 title: "High Risk Domains (Version 1.0)"
-excerpt: ""
+excerpt: "The version 1.0 website block lists, including the SIVT domain feed and the anti-phishing/malware URL feed, with naming conventions and schemas."
 deprecated: false
 hidden: false
 metadata:

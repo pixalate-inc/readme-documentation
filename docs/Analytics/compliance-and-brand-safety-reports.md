@@ -1,6 +1,6 @@
 ---
 title: "Compliance and Brand Safety Reports"
-excerpt: ""
+excerpt: "The Analytics privacy compliance, brand safety and COPPA violation risk reports for websites, mobile apps and CTV apps, and the dimensions each offers."
 deprecated: false
 hidden: false
 metadata:

@@ -1,6 +1,6 @@
 ---
 title: "Mobile Device ID Block List"
-excerpt: ""
+excerpt: "The hourly mobile device ID block list, covering identifier types, fraud types, probability scores, schema and implementation guidance."
 deprecated: false
 hidden: false
 metadata:

@@ -1,6 +1,6 @@
 ---
 title: "MRC Accredited Metrics"
-excerpt: ""
+excerpt: "Pixalate's MRC accredited metrics by environment, and how its Gross, baseline and Net labels map to the MRC's invalid traffic reporting tiers."
 deprecated: false
 hidden: false
 metadata:

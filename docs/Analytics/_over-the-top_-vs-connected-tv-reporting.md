@@ -1,6 +1,6 @@
 ---
 title: "Over-The-Top\" vs. Connected TV Reporting"
-excerpt: ""
+excerpt: "How Pixalate separates OTT content from CTV devices in reporting, plus common CTV fraud types and how server-side ad insertion is treated."
 deprecated: false
 hidden: false
 metadata:

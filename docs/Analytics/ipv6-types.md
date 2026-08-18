@@ -1,6 +1,6 @@
 ---
 title: "IPv6 Types"
-excerpt: ""
+excerpt: "A reference table of IPv6 address prefixes with their designations and IPv4 equivalents, from loopback and unique local addresses to global unicast."
 deprecated: false
 hidden: false
 metadata:

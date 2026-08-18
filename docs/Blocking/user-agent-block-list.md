@@ -1,6 +1,6 @@
 ---
 title: "User-Agent Block List"
-excerpt: ""
+excerpt: "The daily and weekly blocklisted user-agent feeds, how bad UA strings are identified from IAB lists and Pixalate data, and how to download them."
 deprecated: false
 hidden: false
 metadata:

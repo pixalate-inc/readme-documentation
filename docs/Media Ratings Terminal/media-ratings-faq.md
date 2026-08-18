@@ -1,6 +1,6 @@
 ---
 title: "Media Ratings FAQ"
-excerpt: ""
+excerpt: "Answers to common questions about MRT data points, bulk uploads, exports, CTV app store coverage and the Seller Trust Indexes."
 deprecated: false
 hidden: false
 metadata:

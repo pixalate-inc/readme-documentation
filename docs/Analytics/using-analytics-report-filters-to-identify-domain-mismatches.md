@@ -1,6 +1,6 @@
 ---
 title: "Using Analytics report filters to identify domain mismatches"
-excerpt: ""
+excerpt: "How the URL, Domain and True Domain dimensions in Analytics reports reveal misrepresented domains behind your impressions."
 deprecated: false
 hidden: false
 metadata:

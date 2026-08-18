@@ -1,6 +1,6 @@
 ---
 title: "Video Viewability & Video Engagement (Beta)"
-excerpt: ""
+excerpt: "Pixalate's Beta video viewability and engagement measurement: MRC-aligned methodology, OM SDK audibility signals and VAST tag integration."
 deprecated: false
 hidden: false
 metadata:

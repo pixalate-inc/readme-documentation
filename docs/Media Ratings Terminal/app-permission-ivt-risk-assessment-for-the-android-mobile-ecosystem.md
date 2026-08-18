@@ -1,6 +1,6 @@
 ---
 title: "App Permission IVT Risk Assessment For the Android Mobile Ecosystem"
-excerpt: ""
+excerpt: "How Android app permissions are classified and how Pixalate scores them at category and app level to assess invalid traffic risk."
 deprecated: false
 hidden: false
 metadata:

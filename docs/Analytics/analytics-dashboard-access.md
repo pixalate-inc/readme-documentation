@@ -1,6 +1,6 @@
 ---
 title: "Analytics Dashboard Access"
-excerpt: ""
+excerpt: "How to log in to the Pixalate Analytics platform, obtain credentials and change or reset your password."
 deprecated: false
 hidden: false
 metadata:

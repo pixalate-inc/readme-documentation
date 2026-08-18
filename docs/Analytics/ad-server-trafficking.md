@@ -1,6 +1,6 @@
 ---
 title: "Ad Server Trafficking"
-excerpt: ""
+excerpt: "Steps for trafficking Pixalate tags in DFP/GAM, Sizmek, The Trade Desk and Beeswax, including creative wrapper setup and small-business GAM."
 deprecated: false
 hidden: false
 metadata:

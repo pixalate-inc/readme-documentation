@@ -5,6 +5,7 @@ hidden: false
 icon: 🏛️
 metadata:
   robots: index
+excerpt: "Pixalate's MRC accredited metrics by environment, and how its Gross, baseline and Net labels map to the MRC's invalid traffic reporting tiers."
 ---
 #### Pixalate MRC Accreditation(s):
 

@@ -1,6 +1,6 @@
 ---
 title: "Accessing Pixalate's Enterprise APIs"
-excerpt: ""
+excerpt: "Where to find Pixalate's Enterprise API documentation, plus how to pull ads.txt and delisted app data from the Media Ratings Insight and Batch APIs."
 deprecated: false
 hidden: false
 metadata:

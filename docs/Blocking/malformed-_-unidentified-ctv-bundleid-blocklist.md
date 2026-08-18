@@ -1,6 +1,6 @@
 ---
 title: "Malformed / Unidentified CTV BundleId Blocklist"
-excerpt: ""
+excerpt: "The weekly feed of malformed and unidentified CTV bundle IDs, its schema, the spoofing risks it addresses and how it is delivered over FTP."
 deprecated: false
 hidden: false
 metadata:

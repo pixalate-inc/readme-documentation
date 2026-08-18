@@ -1,6 +1,6 @@
 ---
 title: "Analytics Reporting Overview"
-excerpt: ""
+excerpt: "How the Analytics dashboard report works, covering filters, reporting periods and time zones, graph types, and saving, exporting or scheduling reports."
 deprecated: false
 hidden: false
 metadata:

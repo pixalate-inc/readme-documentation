@@ -1,6 +1,6 @@
 ---
 title: "IVT Escalations and non-client third-parties"
-excerpt: ""
+excerpt: "How non-client third parties can raise IVT-related inquiries with Pixalate, which inbox and form to use, and what response to expect."
 deprecated: false
 hidden: false
 metadata:

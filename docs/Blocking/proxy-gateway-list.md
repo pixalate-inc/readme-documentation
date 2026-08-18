@@ -1,6 +1,6 @@
 ---
 title: "Proxy Gateway List"
-excerpt: ""
+excerpt: "Lists proxies, TOR nodes and gateways used to mask IP addresses, with user-count buckets that help avoid blocking shared IPs."
 deprecated: false
 hidden: false
 metadata:

@@ -1,6 +1,6 @@
 ---
 title: "High Risk Mobile App Lists (Version 1.0)"
-excerpt: ""
+excerpt: "The daily high risk mobile app list plus the New App and VPN App lists, covering methodology, schemas, risk types and update intervals."
 deprecated: false
 hidden: false
 metadata:

@@ -1,6 +1,6 @@
 ---
 title: "Pixalate Disclaimer"
-excerpt: ""
+excerpt: "Pixalate's disclaimer covering its blog content, its products and Seller Trust Indexes, and the MRC definitions of fraud and invalid traffic it uses."
 deprecated: false
 hidden: false
 metadata:

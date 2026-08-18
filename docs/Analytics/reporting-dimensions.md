@@ -1,6 +1,6 @@
 ---
 title: "Reporting Dimensions"
-excerpt: ""
+excerpt: "Definitions of the reporting dimensions available in Analytics reports, grouped by ad server, geography, device, supply and other categories."
 deprecated: false
 hidden: false
 metadata:

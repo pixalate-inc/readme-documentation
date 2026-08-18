@@ -1,6 +1,6 @@
 ---
 title: "Analytics Updates: High Risk Mobile Apps 2.0 Standard and Enterprise (Beta)"
-excerpt: ""
+excerpt: "What changes in Analytics with High Risk Mobile Apps 2.0: two new high risk app data points and the retirement of the highRiskApp IVT type."
 deprecated: false
 hidden: false
 metadata:

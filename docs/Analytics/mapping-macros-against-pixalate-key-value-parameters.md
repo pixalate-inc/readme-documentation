@@ -1,6 +1,6 @@
 ---
 title: "Mapping macros against Pixalate Key Value parameters"
-excerpt: ""
+excerpt: "The macro mapping process for ad server integrations and the key-value parameters Pixalate tags support in each environment."
 deprecated: false
 hidden: false
 metadata:

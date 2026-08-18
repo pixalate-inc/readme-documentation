@@ -1,6 +1,6 @@
 ---
 title: "Integrating click-tracking"
-excerpt: ""
+excerpt: "Pixalate's click-fraud detection methodology, the click-specific fraud types it reports, click tag set-up and how click fraud appears in Analytics."
 deprecated: false
 hidden: false
 metadata:

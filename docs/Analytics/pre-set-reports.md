@@ -1,6 +1,6 @@
 ---
 title: "Pre-Set Reports"
-excerpt: ""
+excerpt: "The Analytics pre-set reports broken out by app ID, domain and other dimensions, their IVT comparisons and the twelve-month data window."
 deprecated: false
 hidden: false
 metadata:

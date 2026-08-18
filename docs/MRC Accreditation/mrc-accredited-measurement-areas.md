@@ -1,6 +1,6 @@
 ---
 title: "MRC Accredited Measurement Areas"
-excerpt: ""
+excerpt: "Pixalate's MRC accredited measurement areas listed by environment, spanning desktop, mobile web, in-app and CTV impressions, viewability and SIVT."
 deprecated: false
 hidden: false
 metadata:

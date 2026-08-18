@@ -1,6 +1,6 @@
 ---
 title: "Blocking via Amazon DSP"
-excerpt: ""
+excerpt: "How to switch on Pixalate pre-bid IVT filtering inside Amazon DSP line item settings, and which line item types support it."
 deprecated: false
 hidden: false
 metadata:

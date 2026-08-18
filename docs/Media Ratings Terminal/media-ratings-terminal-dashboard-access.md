@@ -1,6 +1,6 @@
 ---
 title: "Media Ratings Terminal Dashboard Access"
-excerpt: ""
+excerpt: "How to reach the Media Ratings Terminal, create or receive login credentials, and reset or change your password."
 deprecated: false
 hidden: false
 metadata:

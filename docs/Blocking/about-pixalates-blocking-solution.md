@@ -1,6 +1,6 @@
 ---
 title: "About Pixalate's Blocking Solution"
-excerpt: ""
+excerpt: "Pixalate's approach to threat intelligence blocking, plus how to implement block lists, follow best practices and download them over HTTP/S."
 deprecated: false
 hidden: false
 metadata:

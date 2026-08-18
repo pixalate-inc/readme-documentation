@@ -1,6 +1,6 @@
 ---
 title: "Whitelisting Policy"
-excerpt: ""
+excerpt: "How to request whitelisting of IP addresses, domains or apps with Pixalate, including the SSAI server IP form and the review process."
 deprecated: false
 hidden: false
 metadata:

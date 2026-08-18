@@ -1,6 +1,6 @@
 ---
 title: "How to use Pixalate\u2019s MFA Data feeds to block MFA traffic"
-excerpt: ""
+excerpt: "Covers Pixalate's three MFA data feeds for websites, mobile apps and CTV apps, with their update schedule, format and naming conventions."
 deprecated: false
 hidden: false
 metadata:

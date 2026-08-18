@@ -1,6 +1,6 @@
 ---
 title: "High Risk CTV Apps (Version 2.0) - Standard and Enterprise (Beta)"
-excerpt: ""
+excerpt: "The 2.0 CTV app block lists, the risk reason codes tagged on each app, and how app-level structural risk differs from impression-level IVT."
 deprecated: false
 hidden: false
 metadata:

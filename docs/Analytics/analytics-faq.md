@@ -1,6 +1,6 @@
 ---
 title: "Analytics FAQ"
-excerpt: ""
+excerpt: "Answers to common Analytics questions on tag setup, IVT and general reporting, SPO reports, viewability, click-tracking, DEFASE and pre-caching."
 deprecated: false
 hidden: false
 metadata:

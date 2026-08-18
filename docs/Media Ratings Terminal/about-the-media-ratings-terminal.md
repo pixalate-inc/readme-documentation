@@ -1,6 +1,6 @@
 ---
 title: "About the Media Ratings Terminal"
-excerpt: ""
+excerpt: "An introduction to the Media Ratings Terminal and its Insight, Discovery, Search, Publisher Trust Index and Seller Trust Index features."
 deprecated: false
 hidden: false
 metadata:

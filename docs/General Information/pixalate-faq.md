@@ -1,6 +1,6 @@
 ---
 title: "Pixalate FAQ"
-excerpt: ""
+excerpt: "Answers to general questions about Pixalate's background, products, MRC accreditations, customer support, measurement and thought leadership."
 deprecated: false
 hidden: false
 metadata:

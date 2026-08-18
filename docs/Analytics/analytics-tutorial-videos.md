@@ -1,6 +1,6 @@
 ---
 title: "Analytics Tutorial Videos"
-excerpt: ""
+excerpt: "An eight-part Analytics video series covering dashboard reports, app mismatch, data feeds, CTV reporting, macros and tag QA."
 deprecated: false
 hidden: false
 metadata:

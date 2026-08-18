@@ -1,6 +1,6 @@
 ---
 title: "Connected TV \"Delisted from the App Store\" (DEFASE) Global and Country-Level Lists"
-excerpt: ""
+excerpt: "Why CTV apps get delisted and how Pixalate's DEFASE CTV feed covers removals from Roku, Fire TV, Samsung, Apple tvOS and LG app stores."
 deprecated: false
 hidden: false
 metadata:

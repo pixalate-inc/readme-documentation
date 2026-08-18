@@ -1,6 +1,6 @@
 ---
 title: "Analytics Updates: High Risk Domains 2.0 (Beta)"
-excerpt: ""
+excerpt: "What changes in Analytics with High Risk Domains 2.0: two new high risk domain data points and the retirement of the highRiskDomain IVT type."
 deprecated: false
 hidden: false
 metadata:

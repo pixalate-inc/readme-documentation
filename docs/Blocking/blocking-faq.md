@@ -1,6 +1,6 @@
 ---
 title: "Blocking FAQ"
-excerpt: ""
+excerpt: "Answers to common questions about Pixalate's block lists, how entries are added, DEFASE and IPv6 feeds, and how to put the lists to use."
 deprecated: false
 hidden: false
 metadata:

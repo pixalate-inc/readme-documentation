@@ -1,6 +1,6 @@
 ---
 title: "Blocking Tutorial Videos"
-excerpt: ""
+excerpt: "Pre-bid blocking tutorial videos covering the app, data center, DEFASE, device ID, domain, IPv4, IPv6 and user-agent data feeds."
 deprecated: false
 hidden: false
 metadata:

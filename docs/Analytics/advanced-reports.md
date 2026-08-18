@@ -1,6 +1,6 @@
 ---
 title: "Advanced Reports"
-excerpt: ""
+excerpt: "The Analytics advanced reports for domains, campaigns, device types, geolocation, app mismatch and IPv6 type, and the data window they cover."
 deprecated: false
 hidden: false
 metadata:

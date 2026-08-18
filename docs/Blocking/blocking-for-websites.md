@@ -1,6 +1,6 @@
 ---
 title: "Blocking for Websites"
-excerpt: ""
+excerpt: "How the Pixalate Tag Server intercepts browser ad requests and suppresses them when real-time and historical signals point to non-human traffic."
 deprecated: false
 hidden: false
 metadata:

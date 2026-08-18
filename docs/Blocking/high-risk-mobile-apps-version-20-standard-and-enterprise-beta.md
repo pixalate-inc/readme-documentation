@@ -1,6 +1,6 @@
 ---
 title: "High Risk Mobile Apps (Version 2.0) - Standard and Enterprise (Beta)"
-excerpt: ""
+excerpt: "The 2.0 mobile app block lists, the risk reason codes attached to each app, and when app-level blocking is the appropriate control."
 deprecated: false
 hidden: false
 metadata:

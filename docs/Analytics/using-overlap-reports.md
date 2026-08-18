@@ -1,6 +1,6 @@
 ---
 title: "Using Overlap Reports"
-excerpt: ""
+excerpt: "How the Data Feeds overlap reports show the effectiveness of the pre-bid lists you subscribe to and help troubleshoot implementation."
 deprecated: false
 hidden: false
 metadata:

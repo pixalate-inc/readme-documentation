@@ -1,6 +1,6 @@
 ---
 title: "MRC Accredited Server-Side-Ad-Insertion (SSAI) Measurement Metrics"
-excerpt: ""
+excerpt: "Definitions of Pixalate's accredited SSAI metrics, covering ad counts, transparent ad counts and their percentages before and after IVT filtration."
 deprecated: false
 hidden: false
 metadata:

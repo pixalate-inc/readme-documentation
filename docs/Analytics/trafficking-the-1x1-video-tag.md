@@ -1,6 +1,6 @@
 ---
 title: "Trafficking the 1x1 Video Tag"
-excerpt: ""
+excerpt: "How to insert the Pixalate 1x1 tracking pixel into VAST XML for video measurement, plus notes on VPAID."
 deprecated: false
 hidden: false
 metadata:

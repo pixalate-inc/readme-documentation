@@ -1,6 +1,6 @@
 ---
 title: "IP Block List (IPv4 and IPv6)"
-excerpt: ""
+excerpt: "The hourly IPv4 and IPv6 block lists, including reputation probability scores, file naming conventions, schema fields and fraud types."
 deprecated: false
 hidden: false
 metadata:

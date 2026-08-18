@@ -1,6 +1,6 @@
 ---
 title: "ConnectedTV Device ID List"
-excerpt: ""
+excerpt: "Details the CTV device ID block list, how CTV signals are baselined separately from mobile, and its schema, probabilities and best practices."
 deprecated: false
 hidden: false
 metadata:

@@ -1,6 +1,6 @@
 ---
 title: "OpenEPG\u2122 Index"
-excerpt: ""
+excerpt: "What the OpenEPG Index measures, how its streaming show rankings are calculated, and how to interpret its reach, ad spend and IVT dimensions."
 deprecated: false
 hidden: false
 metadata:

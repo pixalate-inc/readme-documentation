@@ -1,6 +1,6 @@
 ---
 title: "Reported Metrics"
-excerpt: ""
+excerpt: "Definitions of the metrics available in Analytics reports, organised by gross, GIVT-filtered and IVT-filtered reporting tiers."
 deprecated: false
 hidden: false
 metadata:

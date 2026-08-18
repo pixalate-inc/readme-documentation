@@ -1,6 +1,6 @@
 ---
 title: "Media Ratings Terminal Tutorial Videos"
-excerpt: ""
+excerpt: "Walkthrough videos covering MRT app and domain insights, discovery, CSV lookup, account settings and Connected TV features."
 deprecated: false
 hidden: false
 metadata:

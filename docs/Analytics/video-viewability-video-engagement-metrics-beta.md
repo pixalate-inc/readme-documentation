@@ -1,6 +1,6 @@
 ---
 title: "Video Viewability & Video Engagement Metrics (Beta)"
-excerpt: ""
+excerpt: "Definitions of the 54 video viewability and engagement metrics across three IVT-filtering tiers in Pixalate's Beta pre-set reports."
 deprecated: false
 hidden: false
 metadata:

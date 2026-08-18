@@ -1,6 +1,6 @@
 ---
 title: "Mobile \"Delisted From the App Store\"(DEFASE) Global and Country-Level Lists"
-excerpt: ""
+excerpt: "The defasedApp IVT type and Pixalate's data feeds of apps delisted from Google Play and iTunes, in global and country-level versions."
 deprecated: false
 hidden: false
 metadata:

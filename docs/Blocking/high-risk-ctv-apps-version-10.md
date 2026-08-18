@@ -1,6 +1,6 @@
 ---
 title: "High Risk CTV Apps (Version 1.0)"
-excerpt: ""
+excerpt: "The daily high risk CTV app list: how it is compiled across CTV operating systems, plus its update interval, schema and risk type definitions."
 deprecated: false
 hidden: false
 metadata:

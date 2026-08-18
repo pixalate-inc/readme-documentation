@@ -1,6 +1,6 @@
 ---
 title: "Identifying \"Made For Ads\" (MFA) Websites and Apps using the MRT"
-excerpt: ""
+excerpt: "Find MFA properties in the Media Ratings Terminal using the MFA risk filter in Discovery and the Made For Advertising section in Insights."
 deprecated: false
 hidden: false
 metadata:
