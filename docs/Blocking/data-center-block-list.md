@@ -13,7 +13,11 @@ The Datacenter Block List enables security products to block (or alert on) all c
 
 #### Data Center Block List Details
 
-Update Interval: Once per week (estimated availability Fridays 12:00 PM UTC)
+Update Interval: Once per week (estimated availability Fridays 12:00 AM UTC)
+
+  * Check once every hour on Friday
+  * Download only when a new file is available
+  * Stop pinging once the new file is found
 
 File Format: CSV
 

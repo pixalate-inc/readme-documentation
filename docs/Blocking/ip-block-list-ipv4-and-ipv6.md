@@ -13,7 +13,9 @@ The IP Block List enable security products to block (or alert on) all communicat
 
 ### IP Block List Details
 
-Update Interval: Twice per day (estimated availability 8:00 AM and 8:00 PM UTC)
+**Note:** On November 17, 2025, IPv4 data feeds have been optimized to be generated hourly instead of twice a day. Please visit [this article](https://www.pixalate.com/knowledgebase/hourly-ipv4-blocklist-update-release-notes) for more information. 
+
+Update Interval: Hourly 
 
 File Format: CSV
 
@@ -36,6 +38,16 @@ ipType (IPv6 feed only) |  STRING |  The type associated with the IPv6 address u
 fraudType |  STRING |  The mnemonic name that characterizes the type of invalid traffic associated with a given IP (e.g. “datacenter”). Please see [Reported Invalid Traffic (IVT) Types](https://www.pixalate.com/knowledgebase/reported-invalid-traffic-ivt-types) for the full list of invalid traffic types.   
 probability |  FLOAT |  A number between 0.5 and 1 that characterizes the likelihood that the given IP is associated with a specific risk type (e.g 0.7 is 70% probability). The higher the probability number, the higher the specific risk.  
   
+### Examples:
+
+**IPv4**
+
+![Screenshot 2026-03-26 at 08.55.59](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2008.55.59.png)
+
+**IPv6**
+
+![Screenshot 2026-03-26 at 08.56.08](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2008.56.08.png)
+
 ### IP Block List Best Practices
 
 Below is a list of best practices specific to implementing the IP block list. 
@@ -55,10 +67,15 @@ As a generic guideline, Pixalate recommends the following thresholds:
 
 ### Implementing New Files
 
+  * Start checking (pinging) at the top of the hour
+  * Check every 15 minutes
+  * Download only when the new file becomes available
+  * Stop pinging once the new file is found
+  * Resume the process at the next hour
   * Do not use the file name to determine the latest file. 
     * The CSV files do not include a time or version in the file name, only a date.
-    * The first file available in the day (estimate: 08:00 UTC) would have yesterday's date in the file name.
-    * The second file available, released ~12 hrs later (estimate: 20:00 UTC) will have today's date in the file name.
+    * The first file available in the day would have yesterday's date in the file name.
+    * The file released ~12 hrs later will have today's date in the file name.
     * Note: The last file uploaded for today will have the same file name as the first file uploaded tomorrow and will replace it.
   * Use the header information to determine the latest file
 

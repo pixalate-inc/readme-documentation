@@ -19,6 +19,10 @@ Naming convention in FTP folder: OttDeviceIdBlocklist_YYYYMMDD.csv
 
 Schema: deviceId | fraudType | os | ifaType | deviceName | probability
 
+#### Example:
+
+![Screenshot 2026-03-26 at 08.59.38](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2008.59.38.png)
+
 ### CTV Device ID Block List Best Practices
 
 Below is a list of best practices specific to implementing the Device ID block list. Please see Blocking for general best practices that apply to all lists.
@@ -38,6 +42,9 @@ As a generic guideline, Pixalate recommends the following thresholds:
 
 ### Implementing New Files
 
+  * Check once every hour
+  * Download only when a new file is available
+  * Continue hourly checks even after downloading, as multiple files may occasionally be uploaded
   * Do not use the file name to determine the latest file. 
     * The CSV files do not include a time or version in the file name, only a date.
     * The first file available in the day (estimate: 08:00 UTC) would have yesterday's date in the file name.

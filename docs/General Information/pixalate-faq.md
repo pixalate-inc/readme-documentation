@@ -196,7 +196,7 @@ metadata:
     * Ads.txt adoption (<http://blog.pixalate.com/iab-ads-txt-adotpion-data-publishers-list>)
     * Publisher best practices webinar: <https://pixalate.wistia.com/medias/ufwl5za2l4>
     * Android ad fraud scheme [BuzzFeed coverage] (<https://blog.pixalate.com/mobile-app-laundering-bundle-id-megacast-alleged-sophisticated-invalid-traffic-ad-fraud>)
-    * CTV Ad Fraud Guide: <http://info.pixalate.com/2019-ott-ad-fraud-guide>
+    * CTV AdFraud Guide: <http://info.pixalate.com/2019-ott-ad-fraud-guide>
     * Fraud predictions: <http://blog.pixalate.com/2019-ad-fraud-predictions>
 
   * Can ad fraud ever be "solved"? 

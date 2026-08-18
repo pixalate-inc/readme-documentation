@@ -46,6 +46,9 @@ metadata:
 
     * The reports listed under ‘Fraud Reports’ are only available un UTC. The reports listed under 'Reports' (aka. main reports) are in UTC by default. However, this can be updated to either EST or PST by selecting the buttons at the top right under account name.
 
+  * **What time zone does the Report API report on?**
+    * By default, they are in UTC, unless a different timezone is explicitly specified in the API request.
+
   * **Why are the fraud reports not showing any data for today?**
 
     * The reports listed under ‘Fraud Reports’ are processed only once per day in UTC. However, the reports listed under 'Reports' (aka. main reports) have a 6 hour delay, updating every hour.
@@ -64,6 +67,16 @@ Here are a few common reasons why duplicateImpressions happen, but there could b
 
 As mentioned, duplicateImpressions are a fundamental loss of opportunity for everyone along the supply chain, and could also result in some infrastructure cost for various parties when it happens excessively. Thus if you are working directly with the traffic source, this would be invaluable insights you can share with them that could result in more ad opportunities.
 
+  * **Is Pixalate able to differentiate between real data centers and users logging on using a VPN when Pixalate flags data center traffic?**
+    * Not all VPN services run on datacenters although a majority of them do.  
+  
+Ultimately, a user using a VPN service is obfuscating their activity and it leads to transparency issues. Pixalate relies on other identifiers or traffic signals / characteristics to determine if a user's device is generating impressions across other client data from Pixalate's global pool. This is then taken into consideration when flagging for IVT activity.  
+  
+There is a separate [blocklist of proxy gateways](https://www.pixalate.com/knowledgebase/proxy-gateway-feed) which users leverage in order to hide their real IP address, which is separate from [Pixalate's known datacenter IP blocklist](https://www.pixalate.com/knowledgebase/data-center-block-list).  
+  
+We recommend targeting away from known IPs that could be used for obfuscating activity as they present a high level of not just IVT but ad fraud in general.  
+  
+in terms of IVT flagging, Pixalate has certain obfuscation-based types that could apply to VPN activity at the location and IP levels, apart from datacenter IVT.
   * **Is reporting customizable?**
 
     * Yes. Our Analytics and Media Ratings Terminal products are highly customizable.
@@ -111,6 +124,13 @@ As mentioned, duplicateImpressions are a fundamental loss of opportunity for eve
       * Daily after 6:00 AM UTC: Estimated hourly IVT is reconciled into actual IVT and published in the dashboard and reports
 
     * To account for longer data processing times, it is recommended to pull the previous day's data 1 or 2 hours after 6:00AM UTC.
+
+    * GIVT and SIVT are not updated together with each data refresh. However, it’s important to note:
+
+      * GIVT is deterministic and considered final upon publication.
+      * SIVT is probabilistic and may be refined throughout the day, with final values confirmed after full-day processing.
+    * Hours are delivered in packs of 2, not one by one.
+    * There’s a 3–4 hour lag vs. the hour close because processing time can vary depending on multiple factors which can increase it up to 5-6 hours.
 
   * **What is the range of data that can be retrieved from the pre-set reports vs. advanced reports?**
     * For pre-set reports, the date range for data that can be retrieved is 12 months. The pre-set reports contain a streamlined list of dimensions and metrics available and is optimized for speed.
@@ -239,7 +259,7 @@ This is in order to avoid penalizing an app for misrepresented traffic or bad de
   
 In addition, this is why we advise clients to work directly with the seller or publisher in order to figure out where the sources of these problematic devices are coming from. **  
 **
-  * Does Pixalate measure attention metrics (time on creative, etc.)? Advertisers are requesting this more and more since it shows that not only was the ad viewable, but viewable for x amount of time. 
+  * **Does Pixalate measure attention metrics (time on creative, etc.)? Advertisers are requesting this more and more since it shows that not only was the ad viewable, but viewable for x amount of time.**
     * The following reported metrics most closely align with the industry's definitions of attention related metrics: 
       * Ad Exposure Time (adExposureTime) = The amount of time Ad is visible to the user on the web page. Ad exposure is measured in minutes and seconds.
       * Ad Exposure (adExposure) = The percentage of total time spent on a web page in which the Ad was visible to the user.

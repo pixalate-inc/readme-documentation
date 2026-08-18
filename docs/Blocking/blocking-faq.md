@@ -37,10 +37,10 @@ metadata:
 
     * Yes, TOR/Proxy IPs are included in the Generic IP blocklist. TOR IPs show up less in the blocklist because there are very few TOR IPs in general.
 
-  * **What are the average file sizes for each blocklist?**_(Updated as of Aug 2025)_
+  * **What are the average file sizes for each blocklist?**_(Updated as of Nov 2025)_
 
     * **IP Addresses:**
-      * **IP (v4):** up to 1.8GB
+      * **IP (v4) - Hourly Files:** up to 1GB 
 
       * **IP (v6):** up to 1GB
 
@@ -87,7 +87,26 @@ metadata:
 ### General
 
   * **How often are the pre-bid blocklists updated?**
-    * Our pre-bid blocklists are updated daily. IP and Device lists are updated twice daily.
+    * Our pre-bid blocklists are updated at difference cadences. 
+      * IPv4 and Mobile Device lists are updated hourly.
+      * IPv6 and CTV Device lists are updated twice a day.
+      * Datacenter lists are updated weekly (every Friday). 
+      * All other lists are updated daily. 
+    * The following are recommend frequencies to fetch files: 
+      * **Hourly files** : 
+        * Start checking (pinging) at the top of the hour
+        * Check every 15 minutes
+        * Download only when the new file becomes available
+        * Stop pinging once the new file is found
+        * Resume the process at the next hour
+      * **Daily files** : 
+        * Check once every hour
+        * Download only when a new file is available
+        * Continue hourly checks even after downloading, as multiple files may occasionally be uploaded
+      * **Weekly files** : 
+        * Check once every hour on Friday
+        * Download only when a new file is available
+        * Stop pinging once the new file is found
 
   * **What is our latency or response time to the API?**  
 
@@ -119,6 +138,18 @@ In addition, this is why we advise clients to work directly with the seller or p
   * **If there is a domain or app on the blocklist that I don't want to block, can I do that?**
     * Yes. Because our blocklists are pre-bid, clients can apply the pre-bid lists any way they want.
 
+  * **In the High Risk App blocklist, how should I use the App ID, Bundle ID, and OS columns?**
+    * When blocking an app listed in the high risk app blocklist, we recommend blocking the App ID + OS at a minimum to prevent inadvertently blocking an App ID of the version that is not flagged as high risk. You can also block App ID + Bundle ID + OS for better accuracy of blocking the right app pre-bid.
+  * **Why do some Bundle IDs or App IDs appear in the high risk app blocklist but disappear after a few days or weeks?  
+**
+    * In general, high risk apps have a look-back period for monitoring suspicious traffic characteristics and any indication of improving or worsening traffic patterns. The addition or removal of a bundle ID in a blocklist can be dynamic because the high risk app list is generated daily.
+
+    * The presence of IVT, if / when it improves over time after the bundle or app ID was added to the blocklist, determines whether the app “ages off” the list for a particular IVT type. 
+
+    * An app aging off the blocklist does not guarantee that it will no longer be added to the blocklist because an app can be flagged for other IVT types in the future.
+
+    * We recommend adding the OS when decisioning to block or not block an app ID or bundle ID pre-bid. 
+
   * **What is the fraud scoring and how do we use it?**
     * It's a normalized score between 0-1. The closer to 1, the higher the likelihood that it is fraudulent. To get a placement with the least fraud, sort by fraud score in descending order.
 
@@ -126,16 +157,20 @@ In addition, this is why we advise clients to work directly with the seller or p
     * Pixalate does not make a strong recommendation to clients on where to place the threshold. That being said, most clients generally start around .75 - 1 for testing and adjust accordingly.
 
   * **What is the recommended ping frequency for each blocklist?**
-    * IP Block List: hourly daily 
-    * Data Center IPs: hourly every Friday (Pacific time)
-    * Domain Block List: hourly daily
-    * User Agent List: hourly daily
-
-  *     * Device ID: hourly daily
-    * App: hourly daily
-    * DEFASE (Delisted from the App Store): hourly daily  
-
-    * COPPA datafeeds: hourly every Sunday and Monday (Pacific time)
+    * **Hourly files** : 
+      * Start checking (pinging) at the top of the hour
+      * Check every 15 minutes
+      * Download only when the new file becomes available
+      * Stop pinging once the new file is found
+      * Resume the process at the next hour
+    * **Daily files** : 
+      * Check once every hour
+      * Download only when a new file is available
+      * Continue hourly checks even after downloading, as multiple files may occasionally be uploaded
+    * **Weekly files** : 
+      * Check once every hour on Friday
+      * Download only when a new file is available
+      * Stop pinging once the new file is found
 
 The user agent list has a daily and weekly version, you may reach out to your CS rep to confirm what version you are on.
 

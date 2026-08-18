@@ -62,10 +62,14 @@ For **“Ad Refresh Rate*”** improvements, our general opinion is to focus on 
 
 The overall high / medium "MFA Risk" designations for websites (as seen in the data feed and in the MRT) are marked as follows:
 
-  * Medium MFA Risk - if ONE of the MFA factors applies (High Social traffic or High Paid Traffic Rate or High Ad density or High Ad Load Rate)
-  * High MFA Risk - if more than one of the MFA factors applies (High Social traffic or High Paid Traffic Rate) OR Extremely High Ad density or Extremely High Ad Load Rate)
+  * Medium MFA Risk - if ONE of the MFA factors applies (High Social traffic or High Paid Traffic Rate or High Ad density or High Ad Load Rate) 
+    * Medium risk apps display mixed signals — some MFA-indicative behaviors are present, but not with the consistency or strength required for a High designation.
+  * High MFA Risk - if more than one of the MFA factors applies (High Social traffic or High Paid Traffic Rate) OR Extremely High Ad density or Extremely High Ad Load Rate) 
+    * High risk apps consistently and persistently exhibit signals strongly associated with MFA activity across our classification features — there is little ambiguity in the pattern.
 
-* note - the thresholds for high or extremely high in the above are calculated by looking at the overall global traffic pool and looking for truly aberrant behavior.
+Our recommendation is to transact only with publishers classified as **Low** MFA risk by Pixalate. **High** and **Medium** risk designations should both be treated as disqualifying for inventory sourcing purposes — the distinction between them is informational, reflecting degree of signal clarity, not a meaningful difference in what action to take.
+
+* Note - the thresholds for high or extremely high in the above are calculated by looking at the overall global traffic pool and looking for truly aberrant behavior.
 
 #### [Get in touch with Pixalate to learn more about Made for Advertising](https://www.pixalate.com/scheduledemo). 
 

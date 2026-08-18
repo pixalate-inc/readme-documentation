@@ -13,7 +13,9 @@ A smartphone device ID enables advertisers to individually target towards or aga
 
 ### Mobile Device ID Block List Details
 
-Update Interval: Twice per day (estimated availability 8:00 AM and 8:00 PM UTC)
+Update Interval: Hourly
+
+**Note:** On December 2, 2025, Mobile Device ID data feeds have been optimized to be generated hourly instead of twice a day. Please visit [this article](https://www.pixalate.com/knowledgebase/hourly-mobile-device-id-blocklist-update?hs_preview=hGrpsizt-200876885138) for more information. 
 
 File Format: CSV
 
@@ -31,6 +33,10 @@ os | STRING | The Operating System (OS) name that is associated with a given dev
 idType | STRING | The source of the given device ID (e.g. "ADID", "IDFA").   
 probability |  FLOAT |  A number between 0.5 and 1 that characterizes the likelihood that the given device ID is associated with a specific risk type (e.g 0.7 is 70% probability). The higher the probability number, the higher the specific risk.  
   
+### Example:
+
+![Screenshot 2026-03-26 at 08.58.30](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2008.58.30.png)
+
 ### Mobile Device ID Block List Best Practices
 
 Below is a list of best practices specific to implementing the Device ID block list. Please see Blocking for general best practices that apply to all lists.
@@ -50,10 +56,15 @@ As a generic guideline, Pixalate recommends the following thresholds:
 
 ### Implementing New Files
 
+  * Start checking (pinging) at the top of the hour
+  * Check every 15 minutes
+  * Download only when the new file becomes available
+  * Stop pinging once the new file is found
+  * Resume the process at the next hour
   * Do not use the file name to determine the latest file. 
     * The CSV files do not include a time or version in the file name, only a date.
     * The first file available in the day (estimate: 08:00 UTC) would have yesterday's date in the file name.
-    * The second file available, released ~12 hrs later (estimate: 20:00 UTC) will have today's date in the file name.
+    * The file released ~12 hrs later (estimate: 20:00 UTC) will have today's date in the file name.
     * Note: The last file uploaded for today will have the same file name as the first file uploaded tomorrow and will replace it.
   * Use the header information to determine the latest file
 

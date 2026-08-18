@@ -29,3 +29,5 @@ File Format: CSV
 Schema: domain | risk
 
 Naming convention in FTP folder: domainMFARisk_YYYYMMDD
+
+![Screenshot 2026-03-26 at 09.45.54](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2009.45.54.png)

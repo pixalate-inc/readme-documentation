@@ -19,7 +19,9 @@ The following are the key features within the COPPA Violation Risk Report.
   2. Graphs for visibility of the data points over time
   3. Data grid with detailed analysis
   4. Detailed Dimensions
-  5. Link to MRT for app info
+  5. Link to MRT for app info*****
+
+***Note:** _Access to MRT for COPPA compliance insights requires an MRT subscription with the COPPA widget enabled._
 
 ![](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screen%20Shot%202022-04-11%20at%208-08-43%20PM-png-1.png)
 
@@ -63,8 +65,10 @@ Clients can change the dimensions and metrics they view by clicking on the "Add 
 
 These dimensions are built from the various data points that Pixalate has considered as important in determining the COPPA Violation Risk. Providing them as dimensions in this report allows clients the ability to group data at a granular level, and determine which apps they want to work with and take actions. For example, they can group by "Child Directed" and "Transmits Residential IP" to check if that data has been stored in their systems or not. Or they could use the "Privacy Policy Detected" data to determine which apps they will want to reach out to and request updates.
 
-**5\. Link to MRT**
+**5\. Link to MRT***
 
-Clicking on the appbundle in the grid area will lead the user to the MRT page for that app. This allows the user to quickly learn more about that app.
+Clicking on the app bundle in the grid area will lead the user to the MRT page for that app. This allows the user to quickly learn more about that app.
+
+***Note:** _Access to MRT for COPPA compliance insights requires an MRT subscription with the COPPA widget enabled._
 
 These capabilities within the COPPA Violation Report enables clients to understand the child privacy implications within their actual traffic, and take corrective actions.

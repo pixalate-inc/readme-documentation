@@ -177,11 +177,19 @@ Each category has their own set of text and context relationships that are taken
   * **Is there a limit to the number of apps or websites I can submit at one time via the MRT Discovery CSV upload?**
     * We recommend capping the number of apps or websites to 10,000 records at a time to ensure a quicker response.
   * **Some of the apps or domains I submitted to the MRT Discovery lookup or to the API request were not found, do those count towards the API or CSV upload limit?**
-    * Only successful lookups with data returned are counted against the quota.
+    * Only the inputs and successful lookups with data returned are counted against the quota.
   * **When does the quota for app or website lookups via the API or MRT Discovery CSV upload refresh?**
     * The quota refreshes every 30 days. 
   * **What are the versions supported by the IAB Primary and Secondary Categories?**
     * Apps are aligned with [IAB Taxonomy v2.2](https://iabtechlab.com/standards/content-taxonomy/). Domains are aligned with v1 at the time of this update.
+  * **How are Invalid Traffic (IVT) rates calculated in the MRT?**
+
+    * Pixalate's MRC-accredited IVT measurement draws from a global data pool across all of our integrations, giving us a view of traffic patterns across the full programmatic ecosystem. IVT calculations are provided at the **global** and**per-country** levels for individual apps and domains within their respective MRT insights pages.
+
+    * Pixalate also provides SSP-specific IVT rates for each app or domain in the Authorized Seller section of the insights pages in order to analyze specific supply paths.
+
+    * See Pixalate's measured IVT types here: <https://www.pixalate.com/knowledgebase/reported-invalid-traffic-ivt-types>
+
   * **Why do IVT rates for websites and apps sometimes differ when viewing from the Analytics dashboard vs. the Media Ratings Terminal (MRT)?**
     * The difference in IVT rates and other metrics between the Analytics dashboard vs. the MRT depends primarily on the source of data being measured. 
       * Analytics measures your first-party traffic and the IVT rates as well as other metrics you see are specific to your platform's traffic quality. This allows for more targeted optimization strategies by identifying potential problem areas and IVT types that are present in your traffic in order to take steps to mitigate your risk. 

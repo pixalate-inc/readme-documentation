@@ -23,6 +23,10 @@ File Format: CSV
 
 Schema: osName | platformName | bundleid 
 
+### Example: 
+
+![Screenshot 2026-03-26 at 09.38.01](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2009.38.01.png)
+
 #### **Malformed / Unidentified Bundle ID Impact**
 
 Unmapped Bundle IDs are problematic for targeting, post-bid reporting, and may also be indicative of fraud or spoofing. This can lead to issues for buyers but also all the seller entities within a given supply chain. 

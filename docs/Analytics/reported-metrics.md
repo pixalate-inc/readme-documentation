@@ -11,9 +11,11 @@ metadata:
 
 #### Dashboard Analytics - Reported Metrics/Definitions
 
-**Note:** The table below represents metrics available and common among basic reports. Specialized reports such as Supply Path Optimization, Compliance, Brand Safety, Geolocation and others have specialized metrics available. 
+The table below represents metrics available and common among basic reports. Specialized reports such as Supply Path Optimization, Compliance, Brand Safety, Geolocation and others have specialized metrics available. 
 
 Combined metrics including specialized reports equal roughly 250+ data points available for granular reporting.
+
+**Video Viewability(Beta) & Video Engagement Metrics (Beta):** For the complete metric definitions for the Video Viewability and Video Engagement pre-set reports (54 metrics across 3 IVT-filtering tiers), see the dedicated [Video Viewability & Video Engagement Metrics](/knowledgebase/video-viewability-video-engagement-metrics) page.
 
 **Metric Name** | **Metric Definition**  
 ---|---  

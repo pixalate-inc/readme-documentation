@@ -1,5 +1,5 @@
 ---
-title: "Connected TV High Risk App List"
+title: "High Risk CTV Apps (Version 1.0)"
 excerpt: ""
 deprecated: false
 hidden: false
@@ -38,7 +38,9 @@ bundleId |  STRING |  The bundle ID associated with the app (if available).
 riskType |  STRING |  The mnemonic name that characterizes the type of risk associated with a given appId (e.g. “locationSpoofing”)  
 probability |  FLOAT |  A number between 0.5 and 1 that characterizes the likelihood that the given appId is associated with a specific risk type (e.g 0.7 is 70% probability). The higher the probability number, the higher the specific risk.  
   
-### 
+### Example:
+
+### ![Screenshot 2026-03-26 at 09.21.28](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2009.21.28.png)
 
 ### IVT Types
 

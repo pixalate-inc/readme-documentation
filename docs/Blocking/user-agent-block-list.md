@@ -15,9 +15,22 @@ The thread is created based on the list of valid UA strings and the list of know
 
 There is a list generated weekly and daily. 
 
+  * **Daily files** : 
+    * Check once every hour
+    * Download only when a new file is available
+    * Continue hourly checks even after downloading, as multiple files may occasionally be uploaded
+  * **Weekly files** : 
+    * Check once every hour on Friday
+    * Download only when a new file is available
+    * Stop pinging once the new file is found
+
 Naming convention: UAblacklistingWeekXX or UAblacklisting_YYYYMMDD
 
 Schema: browserAgent
+
+Example: 
+
+![Screenshot 2026-03-26 at 08.54.03](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2008.54.03.png)
 
 In general, UAs may surface on this list for a variety of IVT types;
 

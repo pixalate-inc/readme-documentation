@@ -1,5 +1,5 @@
 ---
-title: "Seller Trust Index (STI)"
+title: "Seller Trust Index (STI) 1.0"
 excerpt: "Ranking all sellers, including supply-side platforms (SSP), listed in ads.txt and app-ads.txt. Trust and sustainability scores for 580+ sellers in 140+ markets, across web, mobile, and connected TV (CTV) inventory."
 deprecated: false
 hidden: false
@@ -8,6 +8,8 @@ metadata:
   description: ''
   robots: index
 ---
+
+On April 1, 2026, Pixalate released an updated 2.0 version of the Seller Trust Index. Please visit [this page](/knowledgebase/rankings) for more information. 
 
 **In this article:**
 

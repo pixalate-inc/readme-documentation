@@ -33,8 +33,6 @@ metadata:
 
   11. [Connected TV: Developer Details, User Overlap Trends, and Inventory Insights](https://www.youtube.com/watch?v=Ex8ZEIz0eWI)
 
-  12. [Connected TV: Discovery Dashboard](https://www.youtube.com/watch?v=JNE0w_k9EA8)
-
 ### Overview and Introduction
 
 ### Granular App Insights
@@ -51,10 +49,8 @@ metadata:
 
 ### Account Settings
 
-### Connected TV: Insights Search Page and Initial Results
+### [Connected TV: Insights Search Page and Initial Results](https://www.youtube.com/watch?v=F-QKDvC6KOg&feature=youtu.be)
 
 ### Connected TV: Risk Overview and App Details
 
 ### Connected TV: Developer Details, User Overlap Trends, and Inventory Insights
-
-### Connected TV: Discovery Dashboard

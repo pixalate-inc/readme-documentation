@@ -163,9 +163,8 @@ If you want to pull App ID/Bundle ID and Device ID data the process will be as f
 
   * Final tag to be traffic in TTD contains highlighted custom parameters defined as custom macros in DCM 
 
-    		[  
-    		![Click Here](https://ad.doubleclick.net/ddm/ad/Nxxxx.site-keyname/Byyyyyyy.n;abr=!ie;sz=widthxheight;ord=\[timestamp\];dc_lat=N;dc_rdid=Czzzz;tag_for_child_directed_treatment=I;appId=\[TD_AppID\];deviceId=%%TTD_DEVICEID%%;kw=\[keyword\]?)](https://ad.doubleclick.net/ddm/jump/Nxxxx.ste-keyname/Byyyyyyy.n;abr=!ie;sz=widthxheight;ord=\[timestamp\];appId=\[TD_AppID\];deviceId=%%TTD_DEVICEID%%;kw=\[keyword\]?)  
-
+    <br>	<SCRIPT language='JavaScript1.1' SRC="https://ad.doubleclick.net/ddm/adj/Nxxxx.site-keyname/Byyyyyyy;abr=!ie;sz=widthxheight;ord=[timestamp];dc_lat=N;dc_rdid=Czzzz;tag_for_child_directed_treatment=I;kw=[keyword];appId=[TD_AppID];deviceId=%%TTD_DEVICEID%%;click=?"><br>	</SCRIPT><br>	<NOSCRIPT><br>		<A HREF="https://ad.doubleclick.net/ddm/jump/Nxxxx.ste-keyname/Byyyyyyy.n;abr=!ie;sz=widthxheight;ord=[timestamp];appId=[TD_AppID];deviceId=%%TTD_DEVICEID%%;kw=[keyword]?"><br>		<IMG SRC="https://ad.doubleclick.net/ddm/ad/Nxxxx.site-keyname/Byyyyyyy.n;abr=!ie;sz=widthxheight;ord=[timestamp];dc_lat=N;dc_rdid=Czzzz;tag_for_child_directed_treatment=I;appId=[TD_AppID];deviceId=%%TTD_DEVICEID%%;kw=[keyword]?" BORDER=0 WIDTH=X HEIGHT=Y ALT="Click Here"></A><br>	</NOSCRIPT><br>  
+  
 ---  
   
   * Pixalate tag to be trafficked in DCM with highlighted custom macros

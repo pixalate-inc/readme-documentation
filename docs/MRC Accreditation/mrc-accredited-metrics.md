@@ -11,7 +11,7 @@ metadata:
 
 #### Pixalate MRC Accreditation(s):
 
-  * (20+) MRC Accredited Measurement Areas
+  * (26+) MRC Accredited Measurement Areas
 
   * (45+) MRC Accredited Reported Metrics**
 

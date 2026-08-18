@@ -9,7 +9,7 @@ metadata:
   robots: index
 ---
 
-The COPPA pre-bid lists are now in production and are available via FTP. There are two lists available:
+The COPPA pre-bid lists are now in production and are available via FTP. There are two lists available for **mobile apps** and **CTV apps** :
 
   * COPPA Compliance Risk Rating: Apps we have determined to have high COPPA risk
   * COPPA Audience (child directed): Apps we have determined to be child directed
@@ -21,9 +21,15 @@ The naming convention and format of the lists are as follows
 **COPPA Violation Risk Rating  
 **
 
-Folder Name: coppaviolationrisk
+Folder Names:
 
-Naming convention: CoppaViolationRiskApps_2022xxxx(CoppaViolationRiskApps_20220410.csv)
+  * Mobile apps: coppaviolationrisk
+  * CTV apps: ctvcoppaviolationrisk
+
+Naming convention:
+
+  * Mobile apps: CoppaViolationRiskApps_2022xxxx(CoppaViolationRiskApps_20220410.csv)
+  * CTV apps: CoppaViolationRiskCtvApps_2022xxxx(CoppaViolationRiskCtvApps_20220410.csv)
 
 Format: appId, osName, risk
 
@@ -33,9 +39,15 @@ Example:
 
 **COPPA Audience (a.k.a. child-directed apps)**
 
-Folder Name: directedtochildren
+Folder Name:
 
-Naming convention: CoppaChildDirectedMobileApps_2022xxxx(CoppaChildDirectedMobileApps_20220320)
+  * Mobile apps: directedtochildren
+  * CTV apps: ctvdirectedtochildren
+
+Naming convention:
+
+  * Mobile apps: CoppaChildDirectedMobileApps_2022xxxx(CoppaChildDirectedMobileApps_20220320)
+  * CTV apps: CoppaChildDirectedCtvApps_2022xxxx(CoppaChildDirectedCtvApps_20220320)
 
 Format: appId, osName
 

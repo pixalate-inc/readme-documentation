@@ -11,9 +11,11 @@ metadata:
 
 The Proxy Gateway feed provides a list of proxies, TOR nodes, and network gateways that malicious users use in order to hide their real IP address. The vast majority of suspicious activities (including botnet distribution and control) take place behind these proxy nodes. In addition, Pixalate’s proxy/gateway detection methodology estimates the number of users behind an IP, in order to better decide if an IP should be blocked without blocking a large subnet from accessing your services. 
 
-Naming convention: Gateways_YYYYMMDD
+**Naming convention:** Gateways_YYYYMMDD
 
-Schema : IP, user_bucket
+**Schema:** IP, user_bucket
+
+![Screenshot 2026-03-26 at 09.43.36](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2009.43.36.png)
 
 **Purpose:** The purpose of Gateway IP list is to surface gateway IP addresses. It contains individual IP addresses associated with the average number of visitors/users behind the IP address.
 

@@ -31,4 +31,4 @@ Schema: platform (store) | appID | risk
 
 Naming convention in FTP folder: ctvappsMFARisk_YYYYMMDD
 
-![Screen Shot 2024-04-26 at 10.22.10 AM](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screen%20Shot%202024-04-26%20at%2010.22.10%20AM.png)
+![Screenshot 2026-03-26 at 08.52.17](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screenshot%202026-03-26%20at%2008.52.17.png)
