@@ -1,0 +1,426 @@
+openapi: 3.0.3
+info:
+  title: OpenEPG Enrichment API
+  version: 1.0.0-draft
+  description: >
+    Resolves CTV ad opportunities (a standard OpenRTB bid request) to the
+    channel and program being watched, returning show metadata as an OpenRTB 2.6
+    Content object with confidence. Misses are structured HTTP 200 responses;
+    HTTP errors are reserved for malformed requests, auth, rate limiting, and
+    infrastructure failure (fail-closed 503). DRAFT — field semantics are
+    ratified; the auth header name and the batch item cap are provisional.
+  contact:
+    name: Pixalate, Inc.
+    url: https://www.pixalate.com
+    email: support@pixalate.com
+  x-logo:
+    url: >-
+      https://cdn.pixalate.com/app-navigation/assets/images/pixalate-logo-red.svg
+    backgroundColor: '#FFFFFF'
+    altText: Pixalate, Inc.
+servers:
+  - url: https://api.pixalate.com/api/v1/openepg
+    description: Pixalate OpenEPG API endpoint version 1.
+security:
+  - ApiKey: []
+tags:
+  - name: OpenEPG
+paths:
+  /enrich:
+    post:
+      operationId: enrich
+      summary: Resolve a single ad opportunity to channel + program metadata
+      tags:
+        - OpenEPG
+      parameters:
+        - $ref: '#/components/parameters/maxCandidates'
+        - $ref: '#/components/parameters/verbose'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrichmentRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /enrich/batch:
+    post:
+      operationId: enrichBatch
+      summary: Resolve many ad opportunities in one call
+      description: >
+        Array of OpenRTB bid requests; the response is an array of
+        single-response envelopes, same order, one-to-one. Invalid items get an
+        `error` entry in their slot; valid items resolve normally. Exceeding the
+        documented item cap fails the whole batch with 400.
+      tags:
+        - OpenEPG
+      parameters:
+        - $ref: '#/components/parameters/maxCandidates'
+        - $ref: '#/components/parameters/verbose'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EnrichmentRequest'
+              maxItems: 1000
+      responses:
+        '200':
+          $ref: '#/components/responses/OkBatch'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: >-
+        Authentication and authorization is achieved by supplying your Pixalate
+        provided API key in the header of the request. An API key may be
+        obtained by signing up for an account on the [Pixalate developer
+        website](https://developer.pixalate.com).
+  parameters:
+    maxCandidates:
+      name: maxCandidates
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10
+        default: 1
+      description: Out-of-range clamps (MAX_CANDIDATES_CLAMPED notice).
+      example: 3
+    verbose:
+      name: verbose
+      in: query
+      required: false
+      schema:
+        type: boolean
+        default: false
+      description: Include the debug object in the response.
+      example: true
+  responses:
+    OK:
+      description: Lookup performed (hit or structured miss).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EnrichmentResponse'
+    OkBatch:
+      description: Batch processed; inspect each slot for per-item outcome.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/EnrichmentResponse'
+    BadRequest:
+      description: >-
+        Malformed request — a non-conforming OpenRTB body, a missing required
+        read field, a timestamp violation, or an exceeded batch cap.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unavailable:
+      description: >-
+        Serving infrastructure degraded — fail closed; never served as a data
+        miss. Retry-After included where meaningful.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    EnrichmentRequest:
+      type: object
+      description: >
+        A standard OpenRTB 2.6 bid request. The service reads only the subset
+        below, from their canonical OpenRTB paths, and validates those read
+        fields strictly against 2.6 (a malformed read field is rejected 400);
+        other fields are permitted and ignored. OpenRTB's required-field set
+        (id, imp) is not enforced — neither is an enrichment input — so a
+        lookup-only body may omit them; imp is accepted when present.
+        maxCandidates and verbose are query parameters, not body fields.
+      additionalProperties: true
+      properties:
+        app:
+          type: object
+          properties:
+            bundle:
+              type: string
+              description: >-
+                App store bundle/ID. Required unless the content-ID endpoint is
+                used.
+              example: '12345'
+            content:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Show/program title (fuzzy match, app-scoped).
+                  example: Evening News
+                channel:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: >-
+                        Native/platform channel identifier (alias-corpus
+                        lookup).
+                      example: ch-4821
+                    name:
+                      type: string
+                      description: Channel display name (fuzzy name match).
+                      example: Example News Network
+        device:
+          type: object
+          properties:
+            ua:
+              type: string
+              description: Required. Client User-Agent; device/platform derived from it.
+              example: Roku/DVP-12.0 (12.0.0.4182-46)
+            os:
+              type: string
+              description: Explicit OS override of UA-derived.
+              example: Roku OS
+            devicetype:
+              type: integer
+              description: Explicit OpenRTB device type; overrides UA-derived.
+              example: 3
+        ext:
+          type: object
+          properties:
+            pixalate:
+              type: object
+              properties:
+                timestamp:
+                  type: string
+                  format: date-time
+                  description: >-
+                    ISO 8601 UTC lookup instant. Absent = now. Per-item in
+                    batch. <=5 min future clamps (TIMESTAMP_CLAMPED); older than
+                    the 7-day horizon -> 400.
+                  example: '2026-08-10T18:30:00Z'
+    EnrichmentResponse:
+      type: object
+      required:
+        - contentCandidates
+        - notices
+      properties:
+        reason:
+          $ref: '#/components/schemas/Reason'
+        notices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notice'
+        contentCandidates:
+          type: array
+          description: Ordered, best first; length ≤ maxCandidates.
+          items:
+            $ref: '#/components/schemas/ContentCandidate'
+        debug:
+          $ref: '#/components/schemas/Debug'
+        error:
+          allOf:
+            - $ref: '#/components/schemas/Error'
+          description: >-
+            Batch only — populated in a slot whose item was invalid (echoes what
+            the single-request 400 would have said).
+    ContentCandidate:
+      type: object
+      required:
+        - content
+        - confidence
+        - matchBasis
+      properties:
+        content:
+          $ref: '#/components/schemas/Content'
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: >-
+            Composite score; derivation documented per matchBasis. No
+            suppression floor — weak matches return with honest low confidence.
+          example: 0.82
+        matchBasis:
+          type: string
+          enum:
+            - CHANNEL_ID
+            - CONTENT_ID
+            - SINGLE_CHANNEL_APP
+            - CHANNEL_ALIAS
+            - CHANNEL_NAME_MATCH
+            - TITLE_MATCH
+            - BUNDLE_SLUG
+          example: CHANNEL_ID
+        candidateReason:
+          type: string
+          enum:
+            - SCHEDULE_GAP
+          description: >-
+            Candidate-level degradation — channel resolved, nothing airing at
+            the timestamp; content carries channel only. Request-level reason
+            reads NO_COVERAGE alongside.
+    Content:
+      type: object
+      description: >-
+        OpenRTB 2.6 Content object — the splice boundary. What an SSP forwards
+        downstream is exactly this object. Absent fields are absent; the API
+        never explains missing metadata. Additional OpenRTB fields permitted.
+        Validated against OpenRTB 2.6 (§3.2.16) before serialization.
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+          description: >-
+            OpenEPG content ID (echo back to the content-ID endpoint for a
+            deterministic lookup).
+          example: oepg-c-9f3a21
+        title:
+          type: string
+          example: Evening News
+        series:
+          type: string
+          description: Guide-provided series string (not an OpenEPG entity ID).
+          example: Evening News
+        episode:
+          type: integer
+          example: 214
+        genre:
+          type: string
+          description: Free-string genre now; IAB cat mapping later.
+          example: News
+        contentrating:
+          type: string
+          example: TV-PG
+        livestream:
+          type: integer
+          enum:
+            - 0
+            - 1
+          example: 1
+        len:
+          type: integer
+          description: Duration in seconds.
+          example: 1800
+        language:
+          type: string
+          example: en
+        channel:
+          type: object
+          properties:
+            id:
+              type: string
+              description: OpenEPG channel ID (returned for client reference).
+              example: oepg-ch-4821
+            name:
+              type: string
+              example: Example News Network
+        ext:
+          type: object
+          description: >-
+            Carries only what we affirmatively decide should travel downstream
+            (vendor attribution). Confidence and matchBasis deliberately live
+            OUTSIDE this object.
+    Reason:
+      type: string
+      description: >
+        Present when contentCandidates is empty or degraded. Single-valued — the
+        earliest resolution stage that failed; a stage that never ran doesn't
+        count. A finer-grained internal subcategory is logged server-side and
+        never serialized in any response.
+      enum:
+        - APP_UNRESOLVED
+        - OUT_OF_SCOPE
+        - NO_COVERAGE
+        - CHANNEL_UNRESOLVED
+        - SHOW_UNRESOLVED
+      example: NO_COVERAGE
+    Notice:
+      type: string
+      description: Always-on, restricted to response-semantics changes.
+      enum:
+        - TIMESTAMP_CLAMPED
+        - MAX_CANDIDATES_CLAMPED
+      example: MAX_CANDIDATES_CLAMPED
+    Debug:
+      type: object
+      description: >-
+        Present only when verbose=true. Identifier-level disclosures
+        (supersession, ignored-empty, unsupported, conflicts) live here and only
+        here.
+      properties:
+        interpreted:
+          type: object
+          description: >-
+            The request as we understood it (resolved app, UA-derived platform,
+            parsed timestamp).
+          additionalProperties: true
+        inputs:
+          type: object
+          description: Per-provided-input verdict map, keyed by request field name.
+          additionalProperties:
+            type: object
+            properties:
+              verdict:
+                type: string
+                enum:
+                  - MATCHED
+                  - UNMATCHED
+                  - IGNORED_EMPTY
+                  - IGNORED_SUPERSEDED
+                  - UNSUPPORTED
+                  - CONFLICT
+                example: MATCHED
+              hint:
+                type: string
+                description: Optional diagnostic (e.g. wrong-field detection).
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (taxonomy provisional).
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: device.ua is required.
