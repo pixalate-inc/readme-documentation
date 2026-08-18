@@ -1,0 +1,36 @@
+---
+title: "MFA (Made for Advertising) Mobile Apps Data Feed"
+excerpt: "How to use the MFA Mobile Apps Data Feed to combat and mitigate MFA risk."
+deprecated: false
+hidden: false
+metadata:
+  title: ''
+  description: ''
+  robots: index
+---
+
+The MFA Mobile Apps data feed consists of a list of apps that have an associated MFA Risk ranging from medium to high. The categorization is based on factors including:
+
+  * **Ad Refresh Rate:** Number of ad impressions observed per device, per minute
+  * **Age:** Age of the app on the App Store
+  * **IVT:** IVT% of the app across regions
+  * **Popularity:** Pixalate’s popularity score for the app 
+  * **Reviews:** Number of Reviews 
+
+For further methodology details across all environments, please see [here](https://www.pixalate.com/knowledgebase/pixalate-mfa-detection-product-overview).  
+
+The list is updated daily and available for download at 8am PST.  
+  
+The naming convention and format of the lists are as follows
+
+**MFA Mobile Apps Data feed:**
+
+Folder Name: mobileappsmfa
+
+File Format: CSV
+
+Schema: store | appID | risk
+
+Naming convention in FTP folder: mobileappMFARisk_YYYYMMDD
+
+![Screen Shot 2024-04-26 at 9.39.57 AM](https://2364596.fs1.hubspotusercontent-na1.net/hubfs/2364596/Screen%20Shot%202024-04-26%20at%209.39.57%20AM.png)
