@@ -1,6 +1,5 @@
 ---
 title: Mobile Apps
-excerpt: ''
 deprecated: false
 hidden: false
 metadata:
