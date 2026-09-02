@@ -1,0 +1,816 @@
+openapi: 3.0.3
+info:
+  title: Enrichment API - Analytics Reports
+  version: 2.0.0
+  description: >-
+    <p>The purpose of this API is to provide the ability for Pixalate Analytics
+    subscribers to ingest analytics data and metadata into their own internal
+    systems.</p> <p><b>Please contact your Customer Success Manager for
+    Analytics API access<b></p>
+  contact:
+    name: Pixalate, Inc.
+    url: https://www.pixalate.com
+    email: support@pixalate.com
+  x-logo:
+    url: >-
+      https://cdn.pixalate.com/app-navigation/assets/images/pixalate-logo-red.svg
+    backgroundColor: '#FFFFFF'
+    altText: Pixalate, Inc.
+servers:
+  - url: https://api.pixalate.com/api/v2
+    description: Pixalate API endpoint version 2.
+security:
+  - ApiKey: []
+tags:
+  - name: Analytics Reports
+paths:
+  /analytics/reports:
+    get:
+      operationId: getAnalyticsReportsMetadata
+      summary: Get analytics reports metadata and quota status
+      description: >-
+        The purpose of this API is to provide metadata information for analytics
+        reports in general. The response is a JSON formatted object containing
+        the current user's quota state and the date the analytics reports
+        database was last updated.
+      tags:
+        - Analytics Reports
+      parameters:
+        - $ref: '#/components/parameters/pretty'
+      responses:
+        '200':
+          $ref: '#/components/responses/OkMetadata'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        5XX:
+          $ref: '#/components/responses/ServerError'
+  /analytics/reports/{reportId}:
+    get:
+      operationId: getAnalyticsReport
+      summary: Retrieve rows from a single analytics report
+      description: >-
+        The purpose of this API is to provide the ability for Pixalate Analytics
+        subscribers to ingest analytics data into their own internal systems.
+        The response is a JSON formatted object containing a list of report
+        items.
+      tags:
+        - Analytics Reports
+      parameters:
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/timeZone'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/q'
+        - $ref: '#/components/parameters/exportUri'
+        - $ref: '#/components/parameters/isAsync'
+        - $ref: '#/components/parameters/isLargeResultSet'
+        - $ref: '#/components/parameters/pretty'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        5XX:
+          $ref: '#/components/responses/ServerError'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: >-
+        <p>Authentication and authorization is achieved by supplying your
+        Pixalate provided API key in the header of the request. An API key may
+        be obtained by signing up for an account on the [Pixalate developer
+        website](https://developer.pixalate.com).</p> <p><b>As of April 2023,
+        Pixalate supports an API-key based authentication method for the
+        Analytics Report API. If you have been provided with username and
+        password credentials during your onboarding to access the Report API,
+        please visit our documentation <a
+        href="https://enterprise-api.pixalate.com/#91653785-02eb-4801-9ce6-7c8cc867c279">here</a>
+        to get started. If you have been provided with an API key, the
+        documentation on this page will guide you on how to integrate.</b></p>
+  parameters:
+    reportId:
+      name: reportId
+      description: >-
+        The report's unique identifier.  To request the default analytics
+        report, use the term <code>default</code> as the report identifier.
+      in: path
+      required: true
+      schema:
+        type: string
+      example: default
+    timeZone:
+      name: timeZone
+      description: >-
+        The time zone in which to sync the report data.  The timezone is the
+        number of minutes from GMT.  Default is 0.
+      in: query
+      required: false
+      schema:
+        type: integer
+      example: 0
+    start:
+      name: start
+      description: Which item in the results from which to start.
+      in: query
+      required: false
+      schema:
+        type: integer
+      example: 0
+    limit:
+      name: limit
+      description: The total number of items to return. Default is 20.
+      in: query
+      schema:
+        type: integer
+      example: 20
+    q:
+      name: q
+      description: >-
+        A URL encoded query to run to retrieve data. It uses a simplified SQL
+        SELECT syntax as follows: <p> [ _column_ [ <code>,</code>_column..._ ] ]
+        [ <code>WHERE</code> _expression_ ] [ <code>GROUP BY</code> _column_ [
+        ,_column..._ ] ] [ <code>ORDER BY</code> _column_ [ <code>DESC</code> ]
+        ] </p> <p> Note: All characters and their values are case sensitive.
+        </p> <table> <tbody> <tr> <td><em>column</em></td>
+        <td><em>dimension</em> or <em>metric</em></td> </tr> <tr>
+        <td><em>dimension</em></td> <td>One of the set of dimension identifiers
+        available for the specified report. See Dimensions schema below.</td>
+        </tr> <tr> <td><em>metric</em></td> <td>One of the set of metric
+        identifiers available for the specified report. See Metrics schema
+        below.</td> </tr> <tr> <td><em>expression</em></td> <td>One of the
+        following: <em>dimension operator literal</em>, or <em>metric comparator
+        literal</em>, or <code>(</code><em>expression</em><code>)</code>, or
+        <em>expression</em> <code>AND</code> <em>expression</em>, or
+        <em>expression</em> <code>OR</code> <em>expression</em>, or
+        <code>CONTAINS</code> <code>(</code><em>dimension</em>, or
+        <em>literal</em><code>)</code></td>        </tr> <tr>
+        <td><em>operator</em></td> <td><code>=</code>, or <code>!=</code></td>
+        </tr> <tr> <td><em>comparator</em></td> <td><code>=</code>, or
+        <code>&gt;</code>, or <code>&lt;</code></td> </tr> <tr>
+        <td><em>literal</em></td> <td><em>number</em>, or</em> <em>string</em>,
+        or <em>date</em></td> </tr> <tr> <td><em>number</em></td> <td>An integer
+        or decimal number.</td> </tr> <tr> <td><em>string</em></td> <td>A text
+        string surrounded by single quotes.</td> </tr> <tr>
+        <td><em>date</em></td> <td>A date as
+        <em>yyyy</em>-<em>mm</em>-<em>dd</em> format surrounded by single
+        quotes.</td> </tr> </tbody> </table>
+      in: query
+      schema:
+        type: string
+      example: >-
+        impressions,nonGivtViews,nonGivtViewsRate,nonGivtViewability,viewability,givtSivtRate,sivtRate,givtRate
+        WHERE day>='2023-01-16' AND day<='2023-01-16' ORDER BY impressions DESC
+    exportUri:
+      name: exportUri
+      in: query
+      required: false
+      description: >-
+        Setting this flag to true indicates that the API returns a URI to the
+        CSV data as an Internet resource rather than the data itself. While the
+        resulting resource is public, the URI contains a randomly generated
+        identifier that ensures the data is relatively secure unless the URI
+        itself is made public by the user.
+      schema:
+        type: boolean
+    isAsync:
+      name: isAsync
+      in: query
+      required: false
+      description: >-
+        If set to true, a CSV URI response is returned immediately. However,
+        this will return a 404 Not Found HTTP status code until the service
+        completes processing the report. Note that this parameter is only
+        recognized when the _exportUri_ parameter is also supplied as true. Note
+        also that the _limit_ parameter is ignored when this parameter is set to
+        true.
+      schema:
+        type: boolean
+    isLargeResultSet:
+      name: isLargeResultSet
+      in: query
+      required: false
+      description: >-
+        If set to true, then processing is handled identically as if the
+        _isAsync_ parameter is set to true. However, the returned CSV file
+        contains a single column with each row being a URL to a CSV file that
+        contains part of the data. Large results that set ORDER BY may cause an
+        400 Bad Request HTTP status code. To resolve, try removing the ORDER BY
+        clause. Note that this parameter is only recognized when the _exportUri_
+        parameter is also supplied as true. Note also that the _limit_ parameter
+        is ignored when this parameter is set to true.
+      schema:
+        type: boolean
+    pretty:
+      name: pretty
+      in: query
+      required: false
+      description: If true, return pretty JSON. Default is false.
+      schema:
+        type: boolean
+  schemas:
+    Metadata:
+      type: object
+      description: Analytics Reports metadata information.
+      properties:
+        database:
+          type: object
+          description: Analytics Reports database state information.
+          properties:
+            lastUpdated:
+              type: string
+              format: date
+              description: >-
+                The date when the Analytics Reports database was last updated.
+                The date format is *YYYY-MM-DD*.
+              example: '2022-04-30'
+        quota:
+          type: object
+          description: Quota state information.
+          properties:
+            available:
+              type: integer
+              description: The amount of quota available for use.
+              example: 480
+            used:
+              type: integer
+              description: The amount of quota used.
+              example: 520
+            expiry:
+              type: string
+              format: date
+              description: >-
+                The datetime when the quota will be refreshed back to the limit.
+                The datetime format is *YYYY-MM-DDTHH:MM:SS.SSSZ*.
+              example: '2022-05-01T12:45:23.234Z'
+            limit:
+              type: integer
+              description: >-
+                The amount of quota to be made available for use when the quota
+                is refreshed.
+              example: 1000
+            interval:
+              type: integer
+              description: >-
+                The number of time units used in calculating the quota refresh
+                datetime.
+              example: 1000
+            timeUnit:
+              type: string
+              enum:
+                - minute
+                - hour
+                - day
+                - week
+                - month
+              description: The time unit used in calculating the quota refresh datetime.
+              example: month
+    ItemList:
+      type: object
+      description: A list of report items.
+      properties:
+        numFound:
+          type: integer
+          description: The total number of report items.
+          example: 1
+        docs:
+          type: array
+          description: A list of report items.
+          items:
+            $ref: '#/components/schemas/Item'
+    Item:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Dimensions'
+        - $ref: '#/components/schemas/Metrics'
+    Dimensions:
+      type: object
+      description: >-
+        <p>Dimensions are the attributes of the data that return values listed
+        in rows. For example, the domain dimension indicates the URL and returns
+        each URL value in an individual row. Many of the dimensions available
+        via the API align with the dimensions available in Pixalate's dashboard
+        reporting.</p> <p><b>Please note that some dimensions (eg. User IP,
+        Device ID, Custom KVs (KV5, KV6), etc.) may not be enabled by default,
+        in which case please reach out to your customer success representative
+        to enable.</b></p>
+      properties:
+        adDomain:
+          type: string
+          description: Detected Domain of site where ad was displayed
+          example: example.org
+        adSize:
+          type: string
+          description: Size of the ad
+          example: 320x50
+        adTrafficSource:
+          type: string
+          description: Domain of which referred visitor to ad domain
+          example: Discovery
+        advertiserId:
+          type: string
+          description: Advertiser identifier
+          example: 1263B
+        areaCode:
+          type: string
+          description: Visitor’s area code
+          example: '650'
+        browserName:
+          type: string
+          description: Visitor’s browser name
+          example: AppleWebKit
+        campaignId:
+          type: string
+          description: Campaign identifier
+          example: '160529'
+        city:
+          type: string
+          description: Visitor’s city
+          example: Macon
+        countryCode:
+          type: string
+          description: Visitor’s country code
+          example: US
+        countryName:
+          type: string
+          description: Visitor’s country name
+          example: UnitedStates
+        day:
+          type: string
+          description: Date
+          example: '2023-01-16'
+        deviceBrandName:
+          type: string
+          description: Visitor’s device brand name
+          example: Apple
+        deviceModelId:
+          type: string
+          description: Visitor’s device identifier
+          example: AppleIphonev
+        deviceMarketingName:
+          type: string
+          description: Visitor’s device marketing name
+          example: AppleIphone
+        deviceTrafficType:
+          type: string
+          description: Visitor’s Detected device Traffic type
+          example: app
+        deviceType:
+          type: string
+          description: Visitor’s device type
+          example: mobile
+        dma:
+          type: string
+          description: Designated Market Area
+          example: '503'
+        fraudType:
+          type: string
+          description: Fraud Traffic Type
+          example: maskedIp
+        ipv6Type:
+          type: string
+          description: IPv6 Type
+          example: 6to4
+        kv1:
+          type: string
+          description: Creative Size
+          example: 320x50
+        kv2:
+          type: string
+          description: Page URL
+          example: https://www.example.com/2322222/example.html
+        kv3:
+          type: string
+          description: <p>User ID
+          example: 74b724ec10
+        kv4:
+          type: string
+          description: <p>User IP (can be IPv4 or IPv6)
+          example: 192.168.1.0
+        kv5:
+          type: string
+          description: (Custom)
+          example: U.S. Dept. of Commerce - NOAA - NMFS
+        kv6:
+          type: string
+          description: (Custom UTM Value)
+          example: IAB19-29
+        kv7:
+          type: string
+          description: Seller ID
+          example: 5
+        kv8:
+          type: string
+          description: (Custom UTM Value)
+          example: example_ex2
+        kv9:
+          type: string
+          description: Content Duration
+          example: '45.0'
+        kv10:
+          type: string
+          description: ISP
+          example: AT&T Wireless
+        kv12:
+          type: string
+          description: Placement ID
+          example: 78768/6177
+        kv13:
+          type: string
+          description: Content ID
+          example: '8907892376'
+        kv14:
+          type: string
+          description: MRAID Version
+          example: 1,2
+        kv15:
+          type: string
+          description: Geographic Region
+          example: OMAHA
+        kv16:
+          type: string
+          description: Latitude
+          example: '65.0'
+        kv17:
+          type: string
+          description: Longitude
+          example: '-147.5'
+        kv18:
+          type: string
+          description: App ID or Bundle ID
+          example: '1523297725'
+        kv19:
+          type: string
+          description: Device ID
+          example: e499
+        kv20:
+          type: string
+          description: Device ID (additional if needed)
+          example: 2279d822
+        kv21:
+          type: string
+          description: Device ID (additional if needed)
+          example: 9dffe499822227
+        kv22:
+          type: string
+          description: Device ID (additional if needed)
+          example: 9dff87e499
+        kv23:
+          type: string
+          description: Carrier ID
+          example: iPhone:Apple
+        kv24:
+          type: string
+          description: Supply Type
+          example: Mobile_InApp_Video
+        kv25:
+          type: string
+          description: App Name
+          example: Example Player
+        kv26:
+          type: string
+          description: Device OS
+          example: iPhone OS
+        kv27:
+          type: string
+          description: Useragent
+          example: >-
+            Mozilla/5.0 (Linux; Android 7.1.2; AFTMM Build/NS6295; wv)
+            AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0
+            Chrome/106.0.5249.170 Mobile Safari/537.36
+        kv28:
+          type: string
+          description: Device manufacturer/model
+          example: Apple_iPhone SE
+        kv32:
+          type: string
+          description: App ID
+          example: '637671'
+        kv44:
+          type: string
+          description: Video Play Status
+          example: null
+        kv52:
+          type: string
+          description: SSAI integration
+          example: null
+        kv55:
+          type: string
+          description: Serialized supply chain object
+          example: 1.0,1!example.com,219,1,c1554a1301!example2.com,3290857094
+        lineItemId:
+          type: string
+          description: Line item identifier
+          example: '23'
+        organization:
+          type: string
+          description: Organization Name
+          example: ComcastCable
+        os:
+          type: string
+          description: Visitor’s operating system
+          example: MacOSX(iPhone)
+        partnerId:
+          type: string
+          description: Partner identifier
+          example: examp
+        placementId:
+          type: string
+          description: Creative identifier
+          example: '872093903'
+        postalCode:
+          type: string
+          description: Visitor’s postal code
+          example: '101773'
+        publisherId:
+          type: string
+          description: Publisher identifier
+          example: examplemedia
+        regionCode:
+          type: string
+          description: Visitor’s region code
+          example: '11'
+        segment:
+          type: string
+          description: Segment
+          example: 5778,2374
+        siteId:
+          type: string
+          description: Site identifier
+          example: '7714'
+        adultRisk:
+          type: string
+          description: Adult Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+        drugRisk:
+          type: string
+          description: Drug Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+        alcoholRisk:
+          type: string
+          description: Alcohol Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+        advisoriesRisk:
+          type: string
+          description: Advisories Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+        hateRisk:
+          type: string
+          description: Hate Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+        offensiveRisk:
+          type: string
+          description: Offensive Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+        gamblingRisk:
+          type: string
+          description: Gambling Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+        violenceRisk:
+          type: string
+          description: Violence Risk (Brand Safety)
+          enum:
+            - low
+            - medium
+            - high
+          example: medium
+    Metrics:
+      type: object
+      description: >-
+        Metrics report the numbers used for quantitative measurement in relation
+        to the reported attributes of dimension. For example, the impressions
+        metric indicates the total number of impressions for each dimension's
+        given row. Many of the metrics available via the API align with the
+        metrics available in Pixalate's dashboard reporting.
+      properties:
+        impressions:
+          type: integer
+          description: Gross Ad Counts
+          example: 107638742
+        shareOfImpressions:
+          type: number
+          description: Share of Gross Ad Counts %
+          example: 1
+        ssaiImpressions:
+          type: integer
+          description: Gross SSAI Ad Counts
+          example: 3552420
+        ssaiImpressionsRate:
+          type: number
+          description: Gross SSAI Ad Counts %
+          example: 0.33
+        ssaiTransparentImpressions:
+          type: integer
+          description: Gross SSAI Transparent Ad Counts
+          example: 1333924
+        ssaiTransparentImpressionsRate:
+          type: number
+          description: Gross SSAI Transparent Ad Counts %
+          example: 0.01239
+        ipv6Impressions:
+          type: integer
+          description: Gross IPv6 Ad Counts
+          example: 38132536
+        ipv6ImpressionsRate:
+          type: number
+          description: Gross IPv6 Ad Counts %
+          example: 0.35426
+        duplicateImps:
+          type: integer
+          description: Gross Duplicate Ad Counts
+          example: 4644646
+        duplicateImpsRate:
+          type: number
+          description: Gross Duplicate Ad Counts %
+          example: 0.04315
+        nonGivtImpressions:
+          type: integer
+          description: Ad Counts
+          example: 106485383
+        shareOfNonGivtImpressions:
+          type: number
+          description: Share of Ad Counts %
+          example: 1
+        nonGivtSsaiImpressions:
+          type: integer
+          description: SSAI Ad Counts
+          example: 3469267
+        nonGivtSsaiImpressionsRate:
+          type: number
+          description: SSAI Ad Counts %
+          example: 0.03258
+        nonGivtSsaiTransparentImpressions:
+          type: integer
+          description: SSAI Transparent Ad Counts
+          example: 1325682
+        nonGivtSsaiTransparentImpressionsRate:
+          type: number
+          description: SSAI Transparent Ad Counts %
+          example: 0.01245
+        nonGivtIpv6Impressions:
+          type: integer
+          description: IPv6 Ad Counts
+          example: 38075513
+        nonGivtIpv6ImpressionsRate:
+          type: number
+          description: IPv6 Ad Counts %
+          example: 0.35757
+        nonGivtDuplicateImps:
+          type: integer
+          description: Duplicate Ad Counts
+          example: 4314329
+        nonGivtDuplicateImpsRate:
+          type: number
+          description: Duplicate Ad Counts %
+          example: 0.04052
+        nonGivtSivtImpressions:
+          type: integer
+          description: Net Ad Counts
+          example: 99896454
+        shareOfNonGivtSivtImpressions:
+          type: number
+          description: Share of Net Ad Counts %
+          example: 1
+        nonGivtSivtSsaiImpressions:
+          type: integer
+          description: Net SSAI Ad Counts
+          example: 2761628
+        nonGivtSivtSsaiImpressionsRate:
+          type: number
+          description: Net SSAI Ad Counts %
+          example: 0.02764
+        nonGivtSivtSsaiTransparentImpressions:
+          type: integer
+          description: Net SSAI Transparent Ad Counts
+          example: 1182730
+        nonGivtSivtSsaiTransparentImpressionsRate:
+          type: number
+          description: Net SSAI Transparent Ad Counts %
+          example: 0.01184
+        nonGivtSivtIpv6Impressions:
+          type: integer
+          description: Net IPv6 Ad Counts
+          example: 35873185
+        nonGivtSivtIpv6ImpressionsRate:
+          type: number
+          description: Net IPv6 Ad Counts %
+          example: 0.3591
+        nonGivtSivtDuplicateImps:
+          type: integer
+          description: Net Duplicate Ad Counts
+          example: 3668854
+        nonGivtSivtDuplicateImpsRate:
+          type: number
+          description: Net Duplicate Ad Counts %
+          example: 0.03673
+        givtImpressions:
+          type: integer
+          description: GIVT Ad Counts
+          example: 1153359
+        givtImpsRate:
+          type: number
+          description: GIVT Ad Counts %
+          example: 0.01072
+        shareOfGivtImpressions:
+          type: number
+          description: Share of GIVT Ad Counts %
+          example: 1
+        givtIpv6Impressions:
+          type: integer
+          description: IPv6 GIVT Ad Counts
+          example: 57023
+        givtIpv6ImpressionsRate:
+          type: number
+          description: IPv6 GIVT Ad Counts %
+          example: 0.00053
+        sivtImpressions:
+          type: integer
+          description: SIVT Ad Counts
+          example: 6588929
+        sivtImpsRate:
+          type: number
+          description: SIVT Ad Counts %
+          example: 0.06121
+        shareOfSivtImpressions:
+          type: number
+          description: Share of SIVT Ad Counts %
+          example: 1
+        shareOfGivtSivtImpressions:
+          type: number
+          description: Share of IVT Ad Counts %
+          example: 1
+        sivtIpv6Impressions:
+          type: integer
+          description: IPv6 SIVT Ad Counts
+          example: 2202328
+        sivtIpv6ImpressionsRate:
+          type: number
+          description: IPv6 SIVT Ad Counts %
+          example: 0.02046
+        givtSivtIpv6Impressions:
+          type: integer
+          description: IPv6 IVT Ad Counts
+          example: 2259351
+        givtSivtIpv6ImpressionsRate:
+          type: number
+          description: IPv6 IVT Ad Counts %
+          example: 0.02099
+  responses:
+    OK:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemList'
+    OkMetadata:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Metadata'
+    BadRequest:
+      description: Bad Request - Invalid parameters in request.
+    Forbidden:
+      description: Forbidden - Rate plan expired or quota has been exhausted.
+    ServerError:
+      description: Server Error - The API experienced an internal error.  Contact support.
+    Unauthorized:
+      description: Unauthorized - Invalid API Key.
