@@ -1,6 +1,5 @@
 ---
 title: Domains
-excerpt: ''
 deprecated: false
 hidden: false
 metadata:
