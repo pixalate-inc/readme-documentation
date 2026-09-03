@@ -1,14 +1,202 @@
 openapi: 3.0.3
 info:
   title: OpenEPG Enrichment API
-  version: 1.0.0-draft
+  version: 1.0.0-draft.2
   description: >
-    Resolves CTV ad opportunities (a standard OpenRTB bid request) to the
-    channel and program being watched, returning show metadata as an OpenRTB 2.6
-    Content object with confidence. Misses are structured HTTP 200 responses;
-    HTTP errors are reserved for malformed requests, auth, rate limiting, and
-    infrastructure failure (fail-closed 503). DRAFT — field semantics are
-    ratified; the auth header name and the batch item cap are provisional.
+    Resolves CTV ad opportunities to the channel and program being watched,
+    returning show
+
+    metadata as an OpenRTB 2.6 Content object with a confidence score. Misses
+    are structured
+
+    HTTP 200 responses; HTTP errors are reserved for malformed requests,
+    authentication,
+
+    rate limiting, and infrastructure failure (fail-closed 503).
+
+
+    ## Two routes
+
+
+    | Route | Endpoint | Shape | For |
+
+    | --- | --- | --- | --- |
+
+    | **OpenRTB passthrough** | `POST /enrich` (+ `/enrich/batch`) | Send an
+    OpenRTB 2.6 bid request, get the same bid request back with `app.content`
+    enriched in place. Diagnostics travel in response headers, never in the
+    body. | SSPs splicing content identity into outbound bid requests in real
+    time. |
+
+    | **Parameterized lookup** | `POST /lookup` (+ `/lookup/batch`) | Send a
+    flat JSON object of named identifier parameters, get a diagnostic envelope
+    with ranked candidates, confidence, and match basis. | DSPs, analytics and
+    measurement, impression-log enrichment, and integration debugging. |
+
+
+    ## Precision ladder — what your inputs buy you
+
+
+    Resolution quality is a function of the identity signal you pass. A bid
+    request that
+
+    carries the needed values resolves with higher precision, and on the
+    parameterized
+
+    lookup every additional identifier parameter you provide increases the
+    precision of the
+
+    results. Three input cases define the ladder:
+
+
+    | Input case | You send | Outcome |
+
+    | --- | --- | --- |
+
+    | App only | `bundle` | Full resolution for single-channel apps. For
+    aggregator apps, a structured miss (`CHANNEL_UNRESOLVED`) rather than a
+    guess. |
+
+    | App + channel identifier | + channel id or channel name | Per-impression
+    channel resolution, then a schedule join to the program airing at the lookup
+    time. |
+
+    | App + show identifier | + show title | Direct program resolution; a show
+    always carries its channel association. |
+
+
+    The more identifier signal your supply passes, the larger the share of
+    impressions that
+
+    resolves beyond the app shell. Channel identifiers decide how far aggregator
+    traffic
+
+    gets — measure their presence per app, not just overall, because a handful
+    of
+
+    high-volume apps usually dominate the answer.
+
+
+    ## Catalog scope
+
+
+    | | |
+
+    | --- | --- |
+
+    | **Content type** | Linear EPG (channel and schedule) content only. |
+
+    | **Geography** | The catalog is US-focused. There is no geo parameter and
+    geo from the bid request is not read — know the geo mix of the traffic you
+    plan to enrich. |
+
+    | **Language** | Predominantly English; non-English identifiers match
+    best-effort. |
+
+    | **Time window** | Any instant from 7 days ago through now. An absent
+    timestamp means now. |
+
+    | **App scoping** | Resolution is scoped to the declared app. A channel
+    carried by a different app is never substituted, at any confidence. |
+
+
+    ## Input handling
+
+
+    - A required read field missing or empty → 400. An optional read field
+    malformed →
+      treated as absent. A read field of the wrong type → 400.
+    - Unknown fields are ignored. On the passthrough route, OpenRTB's own
+    required fields
+      (`id`, `imp`) are not enforced — a lookup-only body may omit them.
+    - Channel id strictly supersedes channel name: when the id is present the
+    name is not
+      consulted (visible only in verbose debug on the lookup route).
+    - When the channel path and the show path disagree, the channel + timestamp
+    result wins;
+      the show input is marked `CONFLICT` in verbose debug.
+    - Timestamps up to 5 minutes in the future are clamped to now
+    (`TIMESTAMP_CLAMPED`
+      notice); further in the future, older than the 7-day window, or unparseable → 400.
+    - Unicode is accepted with normalization. Fuzzy-matched fields (channel
+    name, title) are
+      capped at 256 characters; longer values are truncated.
+
+    ## Service levels
+
+
+    Design targets, confirmed under load before beta traffic:
+
+
+    | Metric | Target |
+
+    | --- | --- |
+
+    | Latency, server-side (both routes) | Real-time (timestamp absent or within
+    5 minutes of now): p50 ≤ 10 ms, p99 ≤ 25 ms. Historical timestamps: p99 ≤
+    250 ms. |
+
+    | Throughput | Horizontally scalable. |
+
+    | Batch | No latency SLA; batch traffic never degrades the real-time
+    targets. |
+
+    | Availability | 99.9% monthly excluding scheduled maintenance (GA target);
+    the beta sandbox runs on internal targets without a contractual availability
+    SLA. |
+
+    | Degradation | Fail closed: 503 with `Retry-After`, never a false miss. |
+
+
+    ## Getting to production
+
+
+    - **Authentication** — headers only, on every route: your Pixalate API key
+    in the
+      `x-api-key` header, or username/password via `Authorization: Basic`. Credentials are
+      never accepted in query parameters.
+    - **Sandbox** — a non-billing sandbox environment is available for
+    integration testing;
+      sandbox requests are never charged.
+    - **Go-live** — integrations validate against a published checklist of
+    required test
+      scenarios before carrying production traffic.
+    - **Versioning** — the major version is in the URL path; additive changes
+    are
+      non-breaking within a major version.
+
+    ## Draft status
+
+
+    Field semantics are ratified. Provisional and subject to confirmation at
+    onboarding:
+
+    the exact route paths, the batch item caps, the diagnostic
+
+    response-header names on the passthrough route, the lookup route's exact
+    field names,
+
+    the `os` vocabulary and the `maxCandidates` default on the lookup route. The
+    handling
+
+    of a timestamp supplied to the passthrough route is **settled**: it is
+    honored, so a
+
+    request is never answered against an instant other than the one it asked for
+    — an
+
+    instant outside the servable window is a 400, never a silent substitution of
+    now.
+
+    During the
+
+    beta, `content.id` and `content.channel.id` values are provisional
+    identifiers with no
+
+    stability promise; a stable public identifier scheme with a stated guarantee
+    arrives at
+
+    GA.
   contact:
     name: Pixalate, Inc.
     url: https://www.pixalate.com
@@ -19,35 +207,218 @@ info:
     backgroundColor: '#FFFFFF'
     altText: Pixalate, Inc.
 servers:
-  - url: https://api.pixalate.com/api/v1/openepg
-    description: Pixalate OpenEPG API endpoint version 1.
+  - url: https://epg-api.pixalate.com/v1
+    description: Production.
+  - url: https://dev-epg-api.pixalate.com/v1
+    description: Development sandbox.
 security:
   - ApiKey: []
+  - BasicAuth: []
 tags:
-  - name: OpenEPG
+  - name: OpenRTB Passthrough
+    description: >-
+      Send an OpenRTB 2.6 bid request; receive the same bid request with
+      `app.content` enriched in place. The response body is always pure OpenRTB
+      — diagnostics travel in response headers.
+  - name: Parameterized Lookup
+    description: >-
+      Send named identifier parameters; receive ranked candidates with
+      confidence, match basis, and diagnostics. Each additional identifier
+      parameter increases the precision of the results.
 paths:
   /enrich:
     post:
       operationId: enrich
-      summary: Resolve a single ad opportunity to channel + program metadata
+      summary: Enrich one OpenRTB bid request in place
       tags:
-        - OpenEPG
-      parameters:
-        - $ref: '#/components/parameters/maxCandidates'
-        - $ref: '#/components/parameters/verbose'
+        - OpenRTB Passthrough
+      description: >
+        The SSP splice path. The body is a standard OpenRTB 2.6 bid request;
+        only the
+
+        documented input fields are read and everything else is preserved. On a
+        hit, the
+
+        response is the same bid request with the program-identity fields of
+        `app.content`
+
+        — `id`, `title`, `series`, `episode`, `season`, `genre`, `cat`, `len`,
+        `channel`,
+
+        `livestream`, `contentrating`, `language` — replaced atomically by the
+        single best
+
+        candidate: each is set to the resolved value or removed when resolved as
+        absent, so
+
+        no stale program facts from the request survive next to the resolution.
+
+        Identity-neutral `app.content` fields and everything outside
+        `app.content` are
+
+        preserved untouched, and `app.content.ext.openepg.attribution` is set.
+        `season`
+
+        and `cat` belong to the replaced cluster but are never populated in v1,
+        so a hit
+
+        always removes them. Preservation is in meaning, not bytes:
+        re-serialization may
+
+        change encoding (key order, number formatting), never values — detect
+        misses by
+
+        reading the `X-OpenEPG-Outcome` header, not by byte-comparing bodies.
+
+
+        On a miss — and on a degraded resolution where the channel resolved but
+        nothing
+
+        airs at the lookup instant — the bid request comes back **unchanged**,
+        HTTP 200.
+
+        A channel-only splice next to foreign program fields is never produced.
+
+
+        Nothing is ever added to the body: no confidence, match basis, reason,
+        notices, or
+
+        debug — anything in this body must be assumed to enter the bidstream.
+        The outcome,
+
+        confidence, and match basis of the chosen candidate travel in
+        `X-OpenEPG-*`
+
+        response headers (header names provisional).
+
+
+        Exactly one candidate is used, always; there are no query parameters on
+        this route.
+
+        Passing a bid request that carries the needed identifier values (channel
+        id,
+
+        channel name, or show title) raises the precision of the enrichment — an
+        app-only
+
+        request on an aggregator app is a structured miss, never a guess. A
+        supplied
+
+        `ext.pixalate.timestamp` is honored on this route and on its batch
+        variant: the
+
+        resolution joins the schedule at that instant instead of at now, under
+        the same
+
+        window and clamping rules the lookup route applies. An instant outside
+        the
+
+        servable window is a 400 carrying `TIMESTAMP_OUT_OF_WINDOW`, never a
+        silent
+
+        substitution of now.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EnrichmentRequest'
+              $ref: '#/components/schemas/OpenRtbBidRequest'
+            examples:
+              channelIdentifierCarried:
+                summary: Aggregator app with a channel identifier
+                value:
+                  app:
+                    bundle: com.pluto.tv
+                    content:
+                      channel:
+                        id: espn
+                  device:
+                    ua: Roku/DVP-13.0.0
       responses:
         '200':
-          $ref: '#/components/responses/OK'
+          description: >
+            Enrichment performed. On a hit, the echoed bid request carries the
+            resolved
+
+            program in `app.content`; on a miss or a degraded resolution, the
+            bid request
+
+            is returned unchanged. Read the `X-OpenEPG-Outcome` header to
+            distinguish the
+
+            two without diffing the body.
+          headers:
+            X-OpenEPG-Outcome:
+              description: >-
+                Hit marker (value provisional), or the miss reason code
+                (APP_UNRESOLVED, OUT_OF_SCOPE, NO_COVERAGE, CHANNEL_UNRESOLVED,
+                SHOW_UNRESOLVED). Header name provisional.
+              schema:
+                type: string
+            X-OpenEPG-Confidence:
+              description: >-
+                Confidence of the spliced candidate, on a hit. Header name
+                provisional.
+              schema:
+                type: string
+            X-OpenEPG-Match-Basis:
+              description: >-
+                Match basis of the resolved channel; omitted on a miss. Present
+                on a degraded resolution too, where the channel resolved but
+                nothing was spliced. Header name provisional.
+              schema:
+                type: string
+            X-OpenEPG-Notices:
+              description: Response-semantics notices, when any. Header name provisional.
+              schema:
+                type: string
+            X-OpenEPG-Request-Id:
+              description: >-
+                Request identifier echo, for support correlation. Header name
+                provisional.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenRtbBidRequest'
+              examples:
+                hit:
+                  summary: 'Hit: app.content replaced with the resolved program'
+                  value:
+                    app:
+                      bundle: com.pluto.tv
+                      content:
+                        id: ec-4Fq0X2
+                        title: SportsCenter
+                        genre: Sports
+                        contentrating: TV-PG
+                        channel:
+                          id: eg-Tj5r8w
+                          name: ESPN
+                        ext:
+                          openepg:
+                            attribution: pixalate-openepg/v1
+                    device:
+                      ua: Roku/DVP-13.0.0
+                miss:
+                  summary: 'Miss: bid request returned unchanged'
+                  value:
+                    app:
+                      bundle: com.pluto.tv
+                      content:
+                        channel:
+                          id: espn
+                    device:
+                      ua: Roku/DVP-13.0.0
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '413':
+          $ref: '#/components/responses/PayloadTooLargeBody'
         '429':
           $ref: '#/components/responses/RateLimited'
         '503':
@@ -55,17 +426,35 @@ paths:
   /enrich/batch:
     post:
       operationId: enrichBatch
-      summary: Resolve many ad opportunities in one call
-      description: >
-        Array of OpenRTB bid requests; the response is an array of
-        single-response envelopes, same order, one-to-one. Invalid items get an
-        `error` entry in their slot; valid items resolve normally. Exceeding the
-        documented item cap fails the whole batch with 400.
+      summary: Enrich many OpenRTB bid requests in one call
       tags:
-        - OpenEPG
-      parameters:
-        - $ref: '#/components/parameters/maxCandidates'
-        - $ref: '#/components/parameters/verbose'
+        - OpenRTB Passthrough
+      description: >
+        An array of OpenRTB 2.6 bid requests in; an array of passthrough
+        responses out,
+
+        same order, one-to-one. An invalid item occupies its slot with the
+        `{code,
+
+        message}` error object its single-request 400 would have carried — the
+        one
+
+        sanctioned non-OpenRTB element in this route's 2xx responses — while
+        valid items
+
+        resolve normally. Exceeding the documented item cap fails the whole
+        batch with
+
+        400. Each item counts as one unit against rate limit and quota. No query
+
+        parameters; no latency SLA on batch. Per-item diagnostic signaling on
+        this route
+
+        is provisional — a batch caller that needs per-item outcome, confidence,
+        or match
+
+        basis should use the parameterized lookup batch, whose envelope carries
+        them.
       requestBody:
         required: true
         content:
@@ -73,15 +462,226 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/EnrichmentRequest'
-              maxItems: 1000
+                $ref: '#/components/schemas/OpenRtbBidRequest'
+              maxItems: 100
       responses:
         '200':
-          $ref: '#/components/responses/OkBatch'
+          description: >-
+            Batch processed; inspect each slot for the per-item outcome — an
+            enriched or unchanged bid request, or an error object for an invalid
+            item.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/OpenRtbBidRequest'
+                    - $ref: '#/components/schemas/Error'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /lookup:
+    post:
+      operationId: lookup
+      summary: Resolve named identifiers to ranked program candidates
+      tags:
+        - Parameterized Lookup
+      description: >
+        The flat REST path: one JSON object of named identifier parameters in, a
+
+        diagnostic envelope of ranked candidates out. **Each additional
+        identifier
+
+        parameter you provide increases the precision of the results**: `bundle`
+        alone
+
+        fully resolves single-channel apps but returns a structured miss on
+        aggregator
+
+        apps; adding `channelId` or `channelName` resolves the channel and joins
+        the
+
+        schedule at the lookup instant; adding `title` resolves the program
+        directly. One
+
+        uniform response shape covers every outcome — parts are populated or
+        empty, never
+
+        reshaped.
+
+
+        Unlike the passthrough route, this route returns confidence, match
+        basis, and
+
+        per-candidate diagnostics in the body — use it for impression-log
+        enrichment,
+
+        DSP-side lookups, and integration debugging. Both routes honor a
+        supplied
+
+        instant; this one reads it from the flat `timestamp` field below. Pass
+
+        `verbose: true` during integration: the debug object shows exactly how
+        each input
+
+        was read.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupRequest'
+            examples:
+              appOnlyAggregator:
+                summary: App only, on an aggregator app
+                value:
+                  bundle: com.pluto.tv
+              withChannelIdentifier:
+                summary: Same app plus a channel identifier
+                value:
+                  bundle: com.pluto.tv
+                  channelId: espn
+                  os: roku
+                  maxCandidates: 3
+      responses:
+        '200':
+          description: Lookup performed (hit or structured miss).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+              examples:
+                appOnlyAggregatorMiss:
+                  summary: 'App only on an aggregator: structured miss, never a guess'
+                  value:
+                    reason: CHANNEL_UNRESOLVED
+                    notices: []
+                    candidates: []
+                withChannelIdentifierHit:
+                  summary: 'With a channel identifier: deterministic hit'
+                  value:
+                    notices: []
+                    candidates:
+                      - content:
+                          id: ec-4Fq0X2
+                          title: SportsCenter
+                          genre: Sports
+                          contentrating: TV-PG
+                          channel:
+                            id: eg-Tj5r8w
+                            name: ESPN
+                          ext:
+                            openepg:
+                              attribution: pixalate-openepg/v1
+                        confidence: 1
+                        matchBasis: CHANNEL_ID
+        '400':
+          $ref: '#/components/responses/BadRequestLookup'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '413':
+          $ref: '#/components/responses/PayloadTooLargeBody'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /lookup/batch:
+    post:
+      operationId: lookupBatch
+      summary: Resolve many lookups in one call
+      tags:
+        - Parameterized Lookup
+      description: >
+        An array of lookup requests in; an array of lookup responses out, same
+        order,
+
+        one-to-one. Each item carries its own `timestamp`, so an impression log
+        enriches
+
+        against the schedule as of each impression, and its own `maxCandidates`
+        and
+
+        `verbose`. An invalid item gets an `error` entry in its slot while the
+        other items
+
+        resolve normally. Exceeding the documented item cap fails the whole
+        batch with
+
+        400. Each item counts as one unit against rate limit and quota. No
+        latency SLA on
+
+        batch.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LookupRequest'
+              maxItems: 100
+            examples:
+              impressionLog:
+                summary: Two impressions, one invalid
+                value:
+                  - bundle: com.pluto.tv
+                    channelId: espn
+                    timestamp: '2026-08-28T18:30:00Z'
+                  - bundle: ''
+                    channelId: espn
+      responses:
+        '200':
+          description: Batch processed; inspect each slot for the per-item outcome.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LookupResponse'
+              examples:
+                impressionLog:
+                  summary: Per-slot outcomes, including one error entry
+                  value:
+                    - notices: []
+                      candidates:
+                        - content:
+                            id: ec-4Fq0X2
+                            title: SportsCenter
+                            genre: Sports
+                            contentrating: TV-PG
+                            channel:
+                              id: eg-Tj5r8w
+                              name: ESPN
+                            ext:
+                              openepg:
+                                attribution: pixalate-openepg/v1
+                          confidence: 1
+                          matchBasis: CHANNEL_ID
+                    - notices: []
+                      candidates: []
+                      error:
+                        code: BAD_REQUEST
+                        message: bundle is required.
+        '400':
+          $ref: '#/components/responses/BadRequestLookup'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
         '429':
           $ref: '#/components/responses/RateLimited'
         '503':
@@ -93,70 +693,87 @@ components:
       name: x-api-key
       in: header
       description: >-
-        Authentication and authorization is achieved by supplying your Pixalate
-        provided API key in the header of the request. An API key may be
+        Your Pixalate-provided API key, in the request header on every route.
+        Credentials are never accepted in query parameters. An API key may be
         obtained by signing up for an account on the [Pixalate developer
         website](https://developer.pixalate.com).
-  parameters:
-    maxCandidates:
-      name: maxCandidates
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 10
-        default: 1
-      description: Out-of-range clamps (MAX_CANDIDATES_CLAMPED notice).
-      example: 3
-    verbose:
-      name: verbose
-      in: query
-      required: false
-      schema:
-        type: boolean
-        default: false
-      description: Include the debug object in the response.
-      example: true
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        Username/password alternative to the API-key header. Headers only —
+        credentials are never accepted in query parameters.
   responses:
-    OK:
-      description: Lookup performed (hit or structured miss).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EnrichmentResponse'
-    OkBatch:
-      description: Batch processed; inspect each slot for per-item outcome.
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/EnrichmentResponse'
     BadRequest:
       description: >-
-        Malformed request — a non-conforming OpenRTB body, a missing required
-        read field, a timestamp violation, or an exceeded batch cap.
+        Malformed request — a non-conforming body, a missing or empty required
+        field, a read field of the wrong type, a timestamp violation
+        (unparseable, more than 5 minutes in the future, or older than the 7-day
+        window), a non-null `ext.pixalate` that is not itself an object, or an
+        exceeded batch cap.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequestLookup:
+      description: >-
+        Malformed request — a non-conforming body, a missing or empty required
+        field, a read field of the wrong type, a timestamp violation
+        (unparseable, more than 5 minutes in the future, or older than the 7-day
+        window), an out-of-vocabulary `os`, an invalid `maxCandidates`, or an
+        exceeded batch cap.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PayloadTooLarge:
+      description: >-
+        The batch body exceeded the maximum number of bytes the route reads. The
+        item cap bounds how many items a batch may carry; this bounds how large
+        those items may be in total, and the two are enforced independently.
+        Split the batch and retry.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PayloadTooLargeBody:
+      description: >-
+        The request body exceeded the maximum number of bytes this route
+        accepts. Applies to the single (non-batch) operations; well below what a
+        real payload from this route ever produces, so it signals a malformed or
+        abusive request rather than an ordinary large one.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
     Unauthorized:
-      description: Missing or invalid API key.
+      description: Missing or unknown credential.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Known credential without entitlement to this product, or disabled.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
     RateLimited:
-      description: Rate limit exceeded.
+      description: >-
+        Rate limit exceeded or quota exhausted — the two are distinguishable in
+        the response, and both include Retry-After.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
     Unavailable:
       description: >-
-        Serving infrastructure degraded — fail closed; never served as a data
-        miss. Retry-After included where meaningful.
+        Serving infrastructure degraded — the API fails closed and never
+        masquerades as a data miss. Retry after the indicated delay.
       headers:
         Retry-After:
           schema:
@@ -166,61 +783,98 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    EnrichmentRequest:
+    OpenRtbBidRequest:
       type: object
       description: >
-        A standard OpenRTB 2.6 bid request. The service reads only the subset
-        below, from their canonical OpenRTB paths, and validates those read
-        fields strictly against 2.6 (a malformed read field is rejected 400);
-        other fields are permitted and ignored. OpenRTB's required-field set
-        (id, imp) is not enforced — neither is an enrichment input — so a
-        lookup-only body may omit them; imp is accepted when present.
-        maxCandidates and verbose are query parameters, not body fields.
+        A standard OpenRTB 2.6 bid request. The service reads only the input
+        subset below,
+
+        from their canonical OpenRTB paths, and validates those read fields
+        strictly (a
+
+        required read field missing or empty, or any read field of the wrong
+        type → 400; a
+
+        malformed optional read field is treated as absent); all other fields
+        are permitted,
+
+        ignored, and preserved in the response. OpenRTB's own required fields
+        (`id`, `imp`)
+
+        are not enforced — a lookup-only body may omit them.
       additionalProperties: true
+      required:
+        - app
+        - device
       properties:
         app:
           type: object
+          required:
+            - bundle
           properties:
             bundle:
               type: string
               description: >-
-                App store bundle/ID. Required unless the content-ID endpoint is
-                used.
-              example: '12345'
+                Required. App store bundle/ID. Alone it fully resolves
+                single-channel apps; on an aggregator (multi-channel) app with
+                no channel or show identifier alongside it, the result is a
+                structured CHANNEL_UNRESOLVED miss, never a guess.
+              example: com.pluto.tv
             content:
               type: object
               properties:
                 title:
                   type: string
-                  description: Show/program title (fuzzy match, app-scoped).
-                  example: Evening News
+                  description: >-
+                    Show/program title. Fuzzy match, scoped to the declared
+                    app's catalog; a resolved show always carries its channel
+                    association. When the channel path and the show path
+                    disagree, the channel + timestamp result wins and this input
+                    is marked CONFLICT in verbose debug (on the lookup route).
+                    Capped at 256 characters; longer values are truncated.
+                  example: SportsCenter
                 channel:
                   type: object
                   properties:
                     id:
                       type: string
                       description: >-
-                        Native/platform channel identifier (alias-corpus
-                        lookup).
-                      example: ch-4821
+                        Native/platform channel identifier, matched exactly
+                        against known identifiers (substring containment as a
+                        fallback). Strictly supersedes channel.name — when
+                        present, the name is not consulted.
+                      example: espn
                     name:
                       type: string
-                      description: Channel display name (fuzzy name match).
-                      example: Example News Network
+                      description: >-
+                        Channel display name (fuzzy name match). Consulted only
+                        when channel.id is absent. Capped at 256 characters;
+                        longer values are truncated.
+                      example: ESPN
         device:
           type: object
+          required:
+            - ua
           properties:
             ua:
               type: string
-              description: Required. Client User-Agent; device/platform derived from it.
-              example: Roku/DVP-12.0 (12.0.0.4182-46)
+              description: >-
+                Required. Client User-Agent; the platform/OS signal is derived
+                from it when device.os gives no signal.
+              example: Roku/DVP-13.0.0
             os:
               type: string
-              description: Explicit OS override of UA-derived.
+              description: >-
+                Explicit OS; overrides the UA-derived value. Unrecognized values
+                yield no OS signal (all-platform weighting) rather than an error
+                — unlike the parameterized lookup route, where an
+                out-of-vocabulary os is rejected.
               example: Roku OS
             devicetype:
               type: integer
-              description: Explicit OpenRTB device type; overrides UA-derived.
+              description: >-
+                Optional OpenRTB device type. Accepted and retained for forward
+                compatibility; not consulted by resolution during the beta.
               example: 3
         ext:
           type: object
@@ -232,15 +886,110 @@ components:
                   type: string
                   format: date-time
                   description: >-
-                    ISO 8601 UTC lookup instant. Absent = now. Per-item in
-                    batch. <=5 min future clamps (TIMESTAMP_CLAMPED); older than
-                    the 7-day horizon -> 400.
-                  example: '2026-08-10T18:30:00Z'
-    EnrichmentResponse:
+                    ISO 8601 UTC instant to resolve against. Absent means now.
+                    Up to 5 minutes in the future is clamped to now with a
+                    `TIMESTAMP_CLAMPED` notice; older than 7 days, or further
+                    ahead than the clamp, is a 400 carrying
+                    `TIMESTAMP_OUT_OF_WINDOW`. The lookup route reads the same
+                    instant from its own flat `timestamp` field.
+                  example: '2026-08-28T18:30:00Z'
+    LookupRequest:
       type: object
       required:
-        - contentCandidates
+        - bundle
+      description: >
+        One flat lookup: the identifier parameters as named fields plus the
+        processing
+
+        controls. Each additional identifier parameter increases the precision
+        of the
+
+        results. There is no user-agent field on this route — platform signal
+        arrives as
+
+        the explicit `os` value.
+      properties:
+        bundle:
+          type: string
+          description: >-
+            Required. App store bundle/ID. Alone it fully resolves
+            single-channel apps; on an aggregator (multi-channel) app with no
+            channel or show identifier alongside it, the result is a structured
+            CHANNEL_UNRESOLVED miss, never a guess.
+          example: com.pluto.tv
+        channelId:
+          type: string
+          description: >-
+            Native/platform channel identifier, matched exactly against known
+            identifiers (substring containment as a fallback). Strictly
+            supersedes channelName — when present, the name is not consulted.
+          example: espn
+        channelName:
+          type: string
+          description: >-
+            Channel display name (fuzzy name match). Consulted only when
+            channelId is absent. Capped at 256 characters; longer values are
+            truncated.
+          example: ESPN
+        title:
+          type: string
+          description: >-
+            Show/program title. Fuzzy match, scoped to the declared app's
+            catalog; a resolved show always carries its channel association.
+            When the channel path and the show path disagree, the channel +
+            timestamp result wins and this input is marked CONFLICT in verbose
+            debug. Capped at 256 characters; longer values are truncated.
+          example: SportsCenter
+        os:
+          type: string
+          description: >-
+            Platform/OS, from a fixed enumerated vocabulary — proposed values,
+            to be confirmed at onboarding: roku, fireos, android, samsung,
+            webos, tvos. An out-of-vocabulary value → 400 — never silently
+            degraded. Omit the field for a platform not listed; resolution then
+            runs against all platforms.
+          example: roku
+        devicetype:
+          type: integer
+          description: >-
+            Optional OpenRTB device type. Accepted and retained for forward
+            compatibility; not consulted by resolution during the beta.
+          example: 3
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            ISO 8601 UTC lookup instant; absent means now. Per item in batch, so
+            an impression log enriches against the schedule as of each
+            impression. Up to 5 minutes in the future clamps to now
+            (TIMESTAMP_CLAMPED notice); further in the future, older than the
+            7-day window, or unparseable → 400.
+          example: '2026-08-28T18:30:00Z'
+        maxCandidates:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 3
+          description: >-
+            Maximum candidates returned. Zero, negative, or unparseable → 400;
+            above the cap clamps (MAX_CANDIDATES_CLAMPED notice). Default
+            provisional.
+          example: 3
+        verbose:
+          type: boolean
+          default: false
+          description: Include the debug object in the response.
+          example: true
+    LookupResponse:
+      type: object
+      required:
+        - candidates
         - notices
+      description: >-
+        One uniform envelope for every outcome — parts are populated or empty,
+        never reshaped. A miss is a successful lookup that found nothing: HTTP
+        200, empty candidates, and a single-valued reason naming the earliest
+        stage that failed.
       properties:
         reason:
           $ref: '#/components/schemas/Reason'
@@ -248,7 +997,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Notice'
-        contentCandidates:
+        candidates:
           type: array
           description: Ordered, best first; length ≤ maxCandidates.
           items:
@@ -275,13 +1024,55 @@ components:
           minimum: 0
           maximum: 1
           description: >-
-            Composite score; derivation documented per matchBasis. No
-            suppression floor — weak matches return with honest low confidence.
+            Composite score, read together with matchBasis: the basis sets the
+            expectation, the score grades the specific result. There is no
+            confidence floor — weak matches return with honestly low scores, and
+            you choose the threshold that fits your use case. Airings are judged
+            on the [start, stop) interval; a timestamp exactly at a boundary
+            does not reduce confidence.
           example: 0.82
         matchBasis:
           type: string
+          description: >
+            How the candidate resolved:
+
+
+            | Value | How it resolved | What to expect |
+
+            | --- | --- | --- |
+
+            | `CHANNEL_ID` | Exact match on the supplied native/platform channel
+            identifier. | Deterministic; ~1.0. |
+
+            | `CHANNEL_ID_CONTAINS` | The supplied channel identifier matched as
+            a substring of a known identifier. | High; graded by match quality.
+            |
+
+            | `CONTENT_ID` | An OpenEPG content ID from a previous response,
+            echoed back. | Deterministic; ~1.0. Documented ahead of availability
+            — neither emitted nor accepted as an input during the beta; the id
+            echo-back input surface arrives with it. |
+
+            | `SINGLE_CHANNEL_APP` | The app carries exactly one channel. |
+            Structural; ~1.0. |
+
+            | `CHANNEL_ALIAS` | A known platform identifier or alias for the
+            channel. | High; graded by how well-established the alias is.
+            Documented ahead of availability — not emitted during the beta. |
+
+            | `CHANNEL_NAME_MATCH` | Fuzzy match on the supplied channel name. |
+            Graded by match quality, discounted by ambiguity. |
+
+            | `TITLE_MATCH` | Fuzzy match on the supplied show title. | Graded
+            by match quality, discounted by ambiguity. |
+
+            | `BUNDLE_SLUG` | Channel signal mined from the bundle string — a
+            fallback that never runs when an explicit channel identifier
+            resolves. | Graded by match quality. Documented ahead of
+            availability — not emitted during the beta. |
           enum:
             - CHANNEL_ID
+            - CHANNEL_ID_CONTAINS
             - CONTENT_ID
             - SINGLE_CHANNEL_APP
             - CHANNEL_ALIAS
@@ -294,46 +1085,53 @@ components:
           enum:
             - SCHEDULE_GAP
           description: >-
-            Candidate-level degradation — channel resolved, nothing airing at
-            the timestamp; content carries channel only. Request-level reason
-            reads NO_COVERAGE alongside.
+            Candidate-level degradation — the channel resolved but nothing airs
+            at the lookup instant; content carries channel identity only. The
+            response-level reason reads NO_COVERAGE alongside.
     Content:
       type: object
       description: >-
         OpenRTB 2.6 Content object — the splice boundary. What an SSP forwards
-        downstream is exactly this object. Absent fields are absent; the API
-        never explains missing metadata. Additional OpenRTB fields permitted.
-        Validated against OpenRTB 2.6 (§3.2.16) before serialization.
+        downstream is exactly this object; confidence, match basis, and reasons
+        live outside it and never enter the bidstream unless you put them there.
+        Fields are populated when known; absent means absent — the API never
+        explains missing metadata. Additional OpenRTB fields permitted.
+        Validated against the OpenRTB 2.6 Content definition (§3.2.16) before
+        serialization.
       additionalProperties: true
       properties:
         id:
           type: string
           description: >-
-            OpenEPG content ID (echo back to the content-ID endpoint for a
-            deterministic lookup).
-          example: oepg-c-9f3a21
+            OpenEPG content ID for the resolved program. Provisional during the
+            beta, with no stability promise; a stable public identifier scheme
+            arrives at GA.
+          example: ec-4Fq0X2
         title:
           type: string
-          example: Evening News
+          description: Program title, in display form.
+          example: SportsCenter
         series:
           type: string
-          description: Guide-provided series string (not an OpenEPG entity ID).
-          example: Evening News
+          description: Guide-provided series name (not an OpenEPG entity ID).
+          example: SportsCenter
         episode:
           type: integer
           example: 214
         genre:
           type: string
-          description: Free-string genre now; IAB cat mapping later.
-          example: News
+          description: Genre string, conformant to the TMDB genre taxonomy.
+          example: Sports
         contentrating:
           type: string
+          description: Content rating (e.g. TV-PG).
           example: TV-PG
         livestream:
           type: integer
           enum:
             - 0
             - 1
+          description: Live flag.
           example: 1
         len:
           type: integer
@@ -347,34 +1145,76 @@ components:
           properties:
             id:
               type: string
-              description: OpenEPG channel ID (returned for client reference).
-              example: oepg-ch-4821
+              description: >-
+                OpenEPG channel ID. Provisional during the beta, with no
+                stability promise; a stable public identifier scheme arrives at
+                GA.
+              example: eg-Tj5r8w
             name:
               type: string
-              example: Example News Network
+              description: >-
+                Channel display name (e.g. "ESPN", not a normalized matching
+                form).
+              example: ESPN
         ext:
           type: object
           description: >-
-            Carries only what we affirmatively decide should travel downstream
-            (vendor attribution). Confidence and matchBasis deliberately live
+            The only non-2.6 data inside content — carries only what should
+            travel downstream. Confidence and matchBasis deliberately live
             OUTSIDE this object.
+          properties:
+            openepg:
+              type: object
+              properties:
+                attribution:
+                  type: string
+                  description: Vendor attribution.
+                  example: pixalate-openepg/v1
     Reason:
       type: string
       description: >
-        Present when contentCandidates is empty or degraded. Single-valued — the
-        earliest resolution stage that failed; a stage that never ran doesn't
-        count. A finer-grained internal subcategory is logged server-side and
-        never serialized in any response.
+        Present when candidates is empty or degraded. Single-valued — the
+        earliest
+
+        resolution stage that failed; a stage that never ran doesn't count.
+        Finer-grained
+
+        internal subcategories are never serialized in any response.
+
+
+        | Value | Meaning | What to do |
+
+        | --- | --- | --- |
+
+        | `APP_UNRESOLVED` | The bundle did not resolve to a supported app. |
+        Confirm the bundle is a CTV app in scope. |
+
+        | `OUT_OF_SCOPE` | The app resolved, but enrichment does not apply to it
+        (e.g. a game). | Nothing — enrichment is not applicable. |
+
+        | `NO_COVERAGE` | App resolved and in scope, but the EPG data needed to
+        answer is not held. | Treat the impression as unenriched. |
+
+        | `CHANNEL_UNRESOLVED` | Channel-bearing inputs produced no channel on
+        this app — including an app-only request on an aggregator app. | Check
+        the identifier is correct and belongs to the declared app; pass a
+        channel id or name on aggregator traffic. |
+
+        | `SHOW_UNRESOLVED` | The show input produced no content on this app. |
+        Check the title; pass a channel identifier alongside it. |
       enum:
         - APP_UNRESOLVED
         - OUT_OF_SCOPE
         - NO_COVERAGE
         - CHANNEL_UNRESOLVED
         - SHOW_UNRESOLVED
-      example: NO_COVERAGE
+      example: CHANNEL_UNRESOLVED
     Notice:
       type: string
-      description: Always-on, restricted to response-semantics changes.
+      description: >-
+        Always-on, restricted to response-semantics changes: TIMESTAMP_CLAMPED
+        (a near-future timestamp was clamped to now) and MAX_CANDIDATES_CLAMPED
+        (the requested candidate count was clamped into range).
       enum:
         - TIMESTAMP_CLAMPED
         - MAX_CANDIDATES_CLAMPED
@@ -382,15 +1222,16 @@ components:
     Debug:
       type: object
       description: >-
-        Present only when verbose=true. Identifier-level disclosures
-        (supersession, ignored-empty, unsupported, conflicts) live here and only
-        here.
+        Present only when verbose=true, on the parameterized lookup route.
+        Identifier-level disclosures (supersession, ignored-empty, unsupported,
+        conflicts) live here and only here. Use it during integration: it shows
+        exactly how each input was read.
       properties:
         interpreted:
           type: object
           description: >-
-            The request as we understood it (resolved app, UA-derived platform,
-            parsed timestamp).
+            The request as understood (resolved app, platform, parsed
+            timestamp).
           additionalProperties: true
         inputs:
           type: object
@@ -410,7 +1251,9 @@ components:
                 example: MATCHED
               hint:
                 type: string
-                description: Optional diagnostic (e.g. wrong-field detection).
+                description: >-
+                  Optional diagnostic — for example, a value that appears to
+                  belong in a different field.
     Error:
       type: object
       required:
@@ -419,8 +1262,30 @@ components:
       properties:
         code:
           type: string
-          description: Machine-readable error code (taxonomy provisional).
-          example: INVALID_REQUEST
+          description: >-
+            Machine-readable error code. A code names a product condition the
+            HTTP status cannot express; where there is no such distinction the
+            code is the status name, so branch on the status first and on the
+            code only for the values below. RATE_LIMITED and QUOTA_EXHAUSTED are
+            both 429 and mean different things about your plan: the first is a
+            request-rate ceiling and clears within the window, the second is
+            your plan's allowance and clears at the period reset.
+            BATCH_TOO_LARGE means the batch exceeded the documented item cap —
+            split and retry. TIMESTAMP_OUT_OF_WINDOW means the instant requested
+            lies outside the 7-day coverage window or more than 5 minutes in the
+            future.
+          enum:
+            - BAD_REQUEST
+            - BATCH_TOO_LARGE
+            - TIMESTAMP_OUT_OF_WINDOW
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - NOT_FOUND
+            - PAYLOAD_TOO_LARGE
+            - RATE_LIMITED
+            - QUOTA_EXHAUSTED
+            - SERVICE_UNAVAILABLE
+          example: BAD_REQUEST
         message:
           type: string
-          example: device.ua is required.
+          example: bundle is required.
