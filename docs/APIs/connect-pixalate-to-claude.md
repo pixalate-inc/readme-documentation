@@ -14,7 +14,7 @@ https://mcp.pixalate.com/mcp
 
 ## Claude on the web and Claude Desktop
 
-1. Open Settings, then Connectors.
+1. Open Customize, then Connectors.
 2. Choose Add custom connector.
 3. Name it pixalate-mcp and paste the server address above.
 4. Save, then choose Connect.
@@ -22,6 +22,12 @@ https://mcp.pixalate.com/mcp
 
 The window closes on its own. Pixalate now appears in your connector list and its tools are
 available in any conversation.
+
+On a Team or Enterprise plan you may not see Add custom connector at all. Adding one is an
+owner action there: your Claude owner adds Pixalate once for the whole organization, and you
+then open Customize, then Connectors and choose Connect. If the option is missing, ask your
+Claude owner rather than Pixalate support, because this one is a permission on the Claude side
+and not something we can enable for you.
 
 ## Claude Code
 
