@@ -3,6 +3,21 @@ info:
   title: OpenEPG Enrichment API
   version: 1.0.0-draft.2
   description: >
+    This description is DERIVED from the OpenEPG Enrichment Service
+    specification
+
+    (docs/confluence/Specification/ in the epg-enrichment-api repository), which
+    is authoritative for all
+
+    behavior. This document owns schema-level detail — full schemas, examples,
+    and status codes —
+
+    that the specification does not descend to. Where the two disagree on
+    behavior, the
+
+    specification is correct and this document has a defect.
+
+
     Resolves CTV ad opportunities to the channel and program being watched,
     returning show
 
@@ -30,7 +45,7 @@ info:
 
     | **Parameterized lookup** | `POST /lookup` (+ `/lookup/batch`) | Send a
     flat JSON object of named identifier parameters, get a diagnostic envelope
-    with ranked candidates, confidence, and match basis. | DSPs, analytics and
+    with the best match, its confidence, and reason codes. | DSPs, analytics and
     measurement, impression-log enrichment, and integration debugging. |
 
 
@@ -168,35 +183,27 @@ info:
     ## Draft status
 
 
-    Field semantics are ratified. Provisional and subject to confirmation at
-    onboarding:
+    Field semantics and shapes are ratified, the route paths, batch item caps,
+    diagnostic
 
-    the exact route paths, the batch item caps, the diagnostic
+    response-header names, lookup field names and `os` vocabulary among them. A
 
-    response-header names on the passthrough route, the lookup route's exact
-    field names,
+    timestamp supplied to the passthrough route is honored, so a request is
+    never
 
-    the `os` vocabulary and the `maxCandidates` default on the lookup route. The
-    handling
+    answered against an instant other than the one it asked for — an instant
+    outside
 
-    of a timestamp supplied to the passthrough route is **settled**: it is
-    honored, so a
+    the servable window is a 400, never a silent substitution of now.
 
-    request is never answered against an instant other than the one it asked for
-    — an
 
-    instant outside the servable window is a 400, never a silent substitution of
-    now.
+    During the beta, `content.id` and `content.channel.id` values are
+    provisional
 
-    During the
+    identifiers with no stability promise; a stable public identifier scheme
+    with a stated
 
-    beta, `content.id` and `content.channel.id` values are provisional
-    identifiers with no
-
-    stability promise; a stable public identifier scheme with a stated guarantee
-    arrives at
-
-    GA.
+    guarantee arrives at GA.
   contact:
     name: Pixalate, Inc.
     url: https://www.pixalate.com
@@ -222,9 +229,9 @@ tags:
       — diagnostics travel in response headers.
   - name: Parameterized Lookup
     description: >-
-      Send named identifier parameters; receive ranked candidates with
-      confidence, match basis, and diagnostics. Each additional identifier
-      parameter increases the precision of the results.
+      Send named identifier parameters; receive the best match with confidence,
+      reason codes, and diagnostics. Each additional identifier parameter
+      increases the precision of the results.
 paths:
   /enrich:
     post:
@@ -280,16 +287,14 @@ paths:
         A channel-only splice next to foreign program fields is never produced.
 
 
-        Nothing is ever added to the body: no confidence, match basis, reason,
-        notices, or
+        Nothing is ever added to the body: no confidence, reason, notices, or
+        debug —
 
-        debug — anything in this body must be assumed to enter the bidstream.
-        The outcome,
+        anything in this body must be assumed to enter the bidstream. The
+        outcome and the
 
-        confidence, and match basis of the chosen candidate travel in
-        `X-OpenEPG-*`
-
-        response headers (header names provisional).
+        confidence of the chosen candidate travel in `X-OpenEPG-*` response
+        headers.
 
 
         Exactly one candidate is used, always; there are no query parameters on
@@ -350,32 +355,20 @@ paths:
           headers:
             X-OpenEPG-Outcome:
               description: >-
-                Hit marker (value provisional), or the miss reason code
-                (APP_UNRESOLVED, OUT_OF_SCOPE, NO_COVERAGE, CHANNEL_UNRESOLVED,
-                SHOW_UNRESOLVED). Header name provisional.
+                `HIT` on a hit, or the miss reason code (APP_UNRESOLVED,
+                OUT_OF_SCOPE, NO_COVERAGE, CHANNEL_UNRESOLVED, SHOW_UNRESOLVED).
               schema:
                 type: string
             X-OpenEPG-Confidence:
-              description: >-
-                Confidence of the spliced candidate, on a hit. Header name
-                provisional.
-              schema:
-                type: string
-            X-OpenEPG-Match-Basis:
-              description: >-
-                Match basis of the resolved channel; omitted on a miss. Present
-                on a degraded resolution too, where the channel resolved but
-                nothing was spliced. Header name provisional.
+              description: Confidence of the spliced candidate, on a hit.
               schema:
                 type: string
             X-OpenEPG-Notices:
-              description: Response-semantics notices, when any. Header name provisional.
+              description: Response-semantics notices, when any.
               schema:
                 type: string
             X-OpenEPG-Request-Id:
-              description: >-
-                Request identifier echo, for support correlation. Header name
-                provisional.
+              description: Request identifier echo, for support correlation.
               schema:
                 type: string
           content:
@@ -445,15 +438,16 @@ paths:
         resolve normally. Exceeding the documented item cap fails the whole
         batch with
 
-        400. Each item counts as one unit against rate limit and quota. No query
+        400. Each item counts as one unit against your rate limit and your
+        usage. No
 
-        parameters; no latency SLA on batch. Per-item diagnostic signaling on
-        this route
+        query parameters; no latency SLA on batch. Per-item diagnostic signaling
+        on this route
 
-        is provisional — a batch caller that needs per-item outcome, confidence,
-        or match
+        is provisional — a batch caller that needs a per-item outcome,
+        confidence, or
 
-        basis should use the parameterized lookup batch, whose envelope carries
+        reason should use the parameterized lookup batch, whose envelope carries
         them.
       requestBody:
         required: true
@@ -493,26 +487,24 @@ paths:
   /lookup:
     post:
       operationId: lookup
-      summary: Resolve named identifiers to ranked program candidates
+      summary: Resolve named identifiers to the best-matching program
       tags:
         - Parameterized Lookup
       description: >
         The flat REST path: one JSON object of named identifier parameters in, a
 
-        diagnostic envelope of ranked candidates out. **Each additional
-        identifier
+        diagnostic envelope out. **Each additional identifier parameter you
+        provide
 
-        parameter you provide increases the precision of the results**: `bundle`
-        alone
+        increases the precision of the results**: `bundle` alone fully resolves
 
-        fully resolves single-channel apps but returns a structured miss on
-        aggregator
+        single-channel apps but returns a structured miss on aggregator apps;
+        adding
 
-        apps; adding `channelId` or `channelName` resolves the channel and joins
-        the
+        `channelId` or `channelName` resolves the channel and joins the schedule
+        at the
 
-        schedule at the lookup instant; adding `title` resolves the program
-        directly. One
+        lookup instant; adding `title` resolves the program directly. One
 
         uniform response shape covers every outcome — parts are populated or
         empty, never
@@ -520,21 +512,22 @@ paths:
         reshaped.
 
 
-        Unlike the passthrough route, this route returns confidence, match
-        basis, and
+        Unlike the passthrough route, this route returns confidence and
+        per-candidate
 
-        per-candidate diagnostics in the body — use it for impression-log
-        enrichment,
+        diagnostics in the body — use it for impression-log enrichment, DSP-side
+        lookups,
 
-        DSP-side lookups, and integration debugging. Both routes honor a
-        supplied
+        and integration debugging. Both routes honor a supplied instant; this
+        one reads it
 
-        instant; this one reads it from the flat `timestamp` field below. Pass
+        from the flat `timestamp` field below. Pass `verbose: true` during
+        integration
 
-        `verbose: true` during integration: the debug object shows exactly how
-        each input
+        against an environment that offers the debug object: it shows exactly
+        how each
 
-        was read.
+        input was read. The sandbox at `dev-epg-api.pixalate.com` offers it.
       requestBody:
         required: true
         content:
@@ -552,7 +545,6 @@ paths:
                   bundle: com.pluto.tv
                   channelId: espn
                   os: roku
-                  maxCandidates: 3
       responses:
         '200':
           description: Lookup performed (hit or structured miss).
@@ -584,7 +576,6 @@ paths:
                             openepg:
                               attribution: pixalate-openepg/v1
                         confidence: 1
-                        matchBasis: CHANNEL_ID
         '400':
           $ref: '#/components/responses/BadRequestLookup'
         '401':
@@ -610,18 +601,16 @@ paths:
         one-to-one. Each item carries its own `timestamp`, so an impression log
         enriches
 
-        against the schedule as of each impression, and its own `maxCandidates`
-        and
+        against the schedule as of each impression, and its own `verbose`. An
+        invalid
 
-        `verbose`. An invalid item gets an `error` entry in its slot while the
-        other items
+        item gets an `error` entry in its slot while the other items resolve
+        normally.
 
-        resolve normally. Exceeding the documented item cap fails the whole
-        batch with
+        Exceeding the documented item cap fails the whole batch with 400. Each
+        item counts
 
-        400. Each item counts as one unit against rate limit and quota. No
-        latency SLA on
-
+        as one unit against your rate limit and your usage. No latency SLA on
         batch.
       requestBody:
         required: true
@@ -668,7 +657,6 @@ paths:
                               openepg:
                                 attribution: pixalate-openepg/v1
                           confidence: 1
-                          matchBasis: CHANNEL_ID
                     - notices: []
                       candidates: []
                       error:
@@ -720,8 +708,7 @@ components:
         Malformed request — a non-conforming body, a missing or empty required
         field, a read field of the wrong type, a timestamp violation
         (unparseable, more than 5 minutes in the future, or older than the 7-day
-        window), an out-of-vocabulary `os`, an invalid `maxCandidates`, or an
-        exceeded batch cap.
+        window), an out-of-vocabulary `os`, or an exceeded batch cap.
       content:
         application/json:
           schema:
@@ -753,15 +740,13 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
     Forbidden:
-      description: Known credential without entitlement to this product, or disabled.
+      description: Known credential without entitlement to this product.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
     RateLimited:
-      description: >-
-        Rate limit exceeded or quota exhausted — the two are distinguishable in
-        the response, and both include Retry-After.
+      description: Rate limit exceeded. `Retry-After` says when the window clears.
       headers:
         Retry-After:
           schema:
@@ -943,11 +928,17 @@ components:
         os:
           type: string
           description: >-
-            Platform/OS, from a fixed enumerated vocabulary — proposed values,
-            to be confirmed at onboarding: roku, fireos, android, samsung,
-            webos, tvos. An out-of-vocabulary value → 400 — never silently
-            degraded. Omit the field for a platform not listed; resolution then
-            runs against all platforms.
+            Platform/OS, from a fixed enumerated vocabulary. An
+            out-of-vocabulary value, including a different letter case, → 400 —
+            never silently degraded. Omit the field for a platform not listed;
+            resolution then runs against all platforms.
+          enum:
+            - roku
+            - fireos
+            - android
+            - samsung
+            - webos
+            - tvos
           example: roku
         devicetype:
           type: integer
@@ -965,20 +956,15 @@ components:
             (TIMESTAMP_CLAMPED notice); further in the future, older than the
             7-day window, or unparseable → 400.
           example: '2026-08-28T18:30:00Z'
-        maxCandidates:
-          type: integer
-          minimum: 1
-          maximum: 10
-          default: 3
-          description: >-
-            Maximum candidates returned. Zero, negative, or unparseable → 400;
-            above the cap clamps (MAX_CANDIDATES_CLAMPED notice). Default
-            provisional.
-          example: 3
         verbose:
           type: boolean
           default: false
-          description: Include the debug object in the response.
+          description: >-
+            Ask for the debug object in the response. Whether the request is
+            answered with one is a property of the environment: an environment
+            that does not offer the debug object returns the ordinary envelope
+            without it, and with nothing on the wire to say so. The sandbox at
+            `dev-epg-api.pixalate.com` offers it.
           example: true
     LookupResponse:
       type: object
@@ -999,7 +985,7 @@ components:
             $ref: '#/components/schemas/Notice'
         candidates:
           type: array
-          description: Ordered, best first; length ≤ maxCandidates.
+          description: The best match on a hit; empty on a miss.
           items:
             $ref: '#/components/schemas/ContentCandidate'
         debug:
@@ -1015,7 +1001,6 @@ components:
       required:
         - content
         - confidence
-        - matchBasis
       properties:
         content:
           $ref: '#/components/schemas/Content'
@@ -1024,62 +1009,13 @@ components:
           minimum: 0
           maximum: 1
           description: >-
-            Composite score, read together with matchBasis: the basis sets the
-            expectation, the score grades the specific result. There is no
-            confidence floor — weak matches return with honestly low scores, and
-            you choose the threshold that fits your use case. Airings are judged
-            on the [start, stop) interval; a timestamp exactly at a boundary
-            does not reduce confidence.
+            How sure the service is of this candidate, and the whole of what the
+            service says about the strength of a match. There is no confidence
+            floor — weak matches return with honestly low scores, and you choose
+            the threshold that fits your use case. Airings are judged on the
+            [start, stop) interval; a timestamp exactly at a boundary does not
+            reduce confidence.
           example: 0.82
-        matchBasis:
-          type: string
-          description: >
-            How the candidate resolved:
-
-
-            | Value | How it resolved | What to expect |
-
-            | --- | --- | --- |
-
-            | `CHANNEL_ID` | Exact match on the supplied native/platform channel
-            identifier. | Deterministic; ~1.0. |
-
-            | `CHANNEL_ID_CONTAINS` | The supplied channel identifier matched as
-            a substring of a known identifier. | High; graded by match quality.
-            |
-
-            | `CONTENT_ID` | An OpenEPG content ID from a previous response,
-            echoed back. | Deterministic; ~1.0. Documented ahead of availability
-            — neither emitted nor accepted as an input during the beta; the id
-            echo-back input surface arrives with it. |
-
-            | `SINGLE_CHANNEL_APP` | The app carries exactly one channel. |
-            Structural; ~1.0. |
-
-            | `CHANNEL_ALIAS` | A known platform identifier or alias for the
-            channel. | High; graded by how well-established the alias is.
-            Documented ahead of availability — not emitted during the beta. |
-
-            | `CHANNEL_NAME_MATCH` | Fuzzy match on the supplied channel name. |
-            Graded by match quality, discounted by ambiguity. |
-
-            | `TITLE_MATCH` | Fuzzy match on the supplied show title. | Graded
-            by match quality, discounted by ambiguity. |
-
-            | `BUNDLE_SLUG` | Channel signal mined from the bundle string — a
-            fallback that never runs when an explicit channel identifier
-            resolves. | Graded by match quality. Documented ahead of
-            availability — not emitted during the beta. |
-          enum:
-            - CHANNEL_ID
-            - CHANNEL_ID_CONTAINS
-            - CONTENT_ID
-            - SINGLE_CHANNEL_APP
-            - CHANNEL_ALIAS
-            - CHANNEL_NAME_MATCH
-            - TITLE_MATCH
-            - BUNDLE_SLUG
-          example: CHANNEL_ID
         candidateReason:
           type: string
           enum:
@@ -1092,8 +1028,8 @@ components:
       type: object
       description: >-
         OpenRTB 2.6 Content object — the splice boundary. What an SSP forwards
-        downstream is exactly this object; confidence, match basis, and reasons
-        live outside it and never enter the bidstream unless you put them there.
+        downstream is exactly this object; confidence, reasons, and notices live
+        outside it and never enter the bidstream unless you put them there.
         Fields are populated when known; absent means absent — the API never
         explains missing metadata. Additional OpenRTB fields permitted.
         Validated against the OpenRTB 2.6 Content definition (§3.2.16) before
@@ -1118,6 +1054,20 @@ components:
         episode:
           type: integer
           example: 214
+        season:
+          type: string
+          description: >-
+            OpenRTB season. Part of the program-identity cluster a passthrough
+            hit replaces, and never populated during the beta, so a hit always
+            removes it from the request.
+        cat:
+          type: array
+          items:
+            type: string
+          description: >-
+            OpenRTB content categories. Part of the program-identity cluster a
+            passthrough hit replaces, and never populated during the beta, so a
+            hit always removes it from the request.
         genre:
           type: string
           description: Genre string, conformant to the TMDB genre taxonomy.
@@ -1140,6 +1090,16 @@ components:
         language:
           type: string
           example: en
+        userrating:
+          type: string
+          description: >-
+            OpenRTB user rating. Identity-neutral: never set by resolution, and
+            preserved from the request on the passthrough route.
+        prodq:
+          type: integer
+          description: >-
+            OpenRTB production quality. Identity-neutral: never set by
+            resolution, and preserved from the request on the passthrough route.
         channel:
           type: object
           properties:
@@ -1160,8 +1120,8 @@ components:
           type: object
           description: >-
             The only non-2.6 data inside content — carries only what should
-            travel downstream. Confidence and matchBasis deliberately live
-            OUTSIDE this object.
+            travel downstream. Confidence, reasons, and notices deliberately
+            live OUTSIDE this object.
           properties:
             openepg:
               type: object
@@ -1189,11 +1149,13 @@ components:
         | `APP_UNRESOLVED` | The bundle did not resolve to a supported app. |
         Confirm the bundle is a CTV app in scope. |
 
-        | `OUT_OF_SCOPE` | The app resolved, but enrichment does not apply to it
-        (e.g. a game). | Nothing — enrichment is not applicable. |
+        | `OUT_OF_SCOPE` | The app resolved and is not an EPG app — enrichment
+        does not apply to it (e.g. a game). | Nothing — enrichment is not
+        applicable. |
 
-        | `NO_COVERAGE` | App resolved and in scope, but the EPG data needed to
-        answer is not held. | Treat the impression as unenriched. |
+        | `NO_COVERAGE` | The app resolved and is an EPG app, but the EPG data
+        needed to answer is not held — no lineup for it, or no schedule covering
+        the instant. | Treat the impression as unenriched. Not billable. |
 
         | `CHANNEL_UNRESOLVED` | Channel-bearing inputs produced no channel on
         this app — including an app-only request on an aggregator app. | Check
@@ -1212,30 +1174,39 @@ components:
     Notice:
       type: string
       description: >-
-        Always-on, restricted to response-semantics changes: TIMESTAMP_CLAMPED
-        (a near-future timestamp was clamped to now) and MAX_CANDIDATES_CLAMPED
-        (the requested candidate count was clamped into range).
+        Always-on, restricted to response-semantics changes: TIMESTAMP_CLAMPED,
+        a near-future timestamp clamped to now.
       enum:
         - TIMESTAMP_CLAMPED
-        - MAX_CANDIDATES_CLAMPED
-      example: MAX_CANDIDATES_CLAMPED
+      example: TIMESTAMP_CLAMPED
     Debug:
       type: object
       description: >-
-        Present only when verbose=true, on the parameterized lookup route.
-        Identifier-level disclosures (supersession, ignored-empty, unsupported,
-        conflicts) live here and only here. Use it during integration: it shows
-        exactly how each input was read.
+        Present on the parameterized lookup route when verbose=true and the
+        environment offers the debug object. It is an integration aid the
+        sandbox at `dev-epg-api.pixalate.com` offers, not a guarantee of every
+        environment: an environment that does not offer it answers a verbose
+        request with the ordinary envelope and no debug object, and with no
+        notice, reason code, or error to say so. Identifier-level disclosures
+        (supersession, ignored-empty, unsupported, conflicts) live here and only
+        here. Use it during integration: it shows exactly how each input was
+        read.
       properties:
         interpreted:
           type: object
           description: >-
-            The request as understood (resolved app, platform, parsed
-            timestamp).
+            The request as understood: the platform it resolved against, and the
+            parsed timestamp.
           additionalProperties: true
         inputs:
           type: object
-          description: Per-provided-input verdict map, keyed by request field name.
+          description: >-
+            Verdict map for the evidence-bearing inputs, keyed by request field
+            name: channelId, channelName and title. These are the inputs whose
+            contribution to the result is otherwise invisible. The context
+            inputs — bundle, os and timestamp — carry no verdict because they
+            are not matched against anything; how they were read is reported
+            under `interpreted`.
           additionalProperties:
             type: object
             properties:
@@ -1266,14 +1237,11 @@ components:
             Machine-readable error code. A code names a product condition the
             HTTP status cannot express; where there is no such distinction the
             code is the status name, so branch on the status first and on the
-            code only for the values below. RATE_LIMITED and QUOTA_EXHAUSTED are
-            both 429 and mean different things about your plan: the first is a
-            request-rate ceiling and clears within the window, the second is
-            your plan's allowance and clears at the period reset.
-            BATCH_TOO_LARGE means the batch exceeded the documented item cap —
-            split and retry. TIMESTAMP_OUT_OF_WINDOW means the instant requested
-            lies outside the 7-day coverage window or more than 5 minutes in the
-            future.
+            code only for the values below. RATE_LIMITED is a 429 from a
+            request-rate ceiling and clears within the window. BATCH_TOO_LARGE
+            means the batch exceeded the documented item cap — split and retry.
+            TIMESTAMP_OUT_OF_WINDOW means the instant requested lies outside the
+            7-day coverage window or more than 5 minutes in the future.
           enum:
             - BAD_REQUEST
             - BATCH_TOO_LARGE
@@ -1283,7 +1251,6 @@ components:
             - NOT_FOUND
             - PAYLOAD_TOO_LARGE
             - RATE_LIMITED
-            - QUOTA_EXHAUSTED
             - SERVICE_UNAVAILABLE
           example: BAD_REQUEST
         message:
