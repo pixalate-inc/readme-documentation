@@ -17,11 +17,14 @@ https://mcp.pixalate.com/mcp
 1. Open Customize, then Connectors.
 2. Choose Add custom connector.
 3. Name it pixalate-mcp and paste the server address above.
-4. Save, then choose Connect.
+4. Confirm the dialog, then choose Connect.
 5. A browser window opens. Sign in with your Pixalate account and approve access.
 
-The window closes on its own. Pixalate now appears in your connector list and its tools are
-available in any conversation.
+The window closes on its own and Pixalate appears in your connector list.
+
+One more step that is easy to miss: a connector is not automatically on in every chat. In the
+conversation you want to use it in, open the plus menu next to the composer, choose Connectors,
+and switch Pixalate on. Until you do, Claude behaves as though Pixalate were not installed.
 
 On a Team or Enterprise plan you may not see Add custom connector at all. Adding one is an
 owner action there: your Claude owner adds Pixalate once for the whole organization, and you
@@ -37,7 +40,10 @@ Run this in a terminal:
 claude mcp add --transport http pixalate-mcp https://mcp.pixalate.com/mcp
 ```
 
-The first time Claude Code connects it opens your browser to sign in.
+Then run `/mcp` inside Claude Code to sign in. It opens your browser the first time.
+
+Claude Code is a separate product with its own connection. A connector you added on the web or
+in the desktop app does not carry across, and nothing is wrong if it does not appear there.
 
 ## Check that it worked
 
@@ -50,9 +56,13 @@ report names in it, you are connected and entitled, and you can start asking que
 
 ## If you see no Pixalate tools
 
-Signing in and having access are two separate steps. Your sign in can succeed while your account
-has not yet been enabled for any tools, and the result is an empty tool list rather than an
-error message.
+Check the connector is switched on for this conversation first, from the plus menu next to the
+composer under Connectors. That is the most common cause and it looks identical to having no
+access.
+
+If it is on and you still see nothing, signing in and having access are two separate steps. Your
+sign in can succeed while your account has not yet been enabled for any tools, and the result is
+an empty tool list rather than an error message.
 
 If that happens, contact your Pixalate account manager and say which product you are trying to
 use. Access is granted per product, so it helps to be specific.
