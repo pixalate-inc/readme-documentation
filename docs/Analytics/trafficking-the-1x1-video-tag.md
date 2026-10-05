@@ -18,49 +18,7 @@ The Pixalate 1x1 tracking pixel, which will be provided during the integration p
 
 Acudeo Compatible
 
-<VAST version="2.0">
-<Ad id="602833">
-<Wrapper>
-<AdSystem>Acudeo Compatible</AdSystem>
-<VASTAdTagURI>
-http://demo.tremormedia.com/proddev/vast/vast_inline_linear.xml
-</VASTAdTagURI>
-<Error>http://myErrorURL/wrapper/error</Error>
-<Impression>h[http://myErrorURL/wrapper/error](http://myErrorURL/wrapper/error)<br />{PIXALATE TRACKING PIXEL}</Impression>
-<Creatives>
-<Creative AdID="602833">
-<Linear>
-<TrackingEvents>
-<Tracking event="creativeView">http://myTrackingURL/wrapper/creativeView</Tracking>
-<Tracking event="start">http://myTrackingURL/wrapper/start</Tracking>
-<Tracking event="midpoint">http://myTrackingURL/wrapper/midpoint</Tracking>
-<Tracking event="firstQuartile">http://myTrackingURL/wrapper/firstQuartile</Tracking>
-<Tracking event="thirdQuartile">http://myTrackingURL/wrapper/thirdQuartile</Tracking>
-<Tracking event="complete">http://myTrackingURL/wrapper/complete</Tracking>
-<Tracking event="mute">http://myTrackingURL/wrapper/mute</Tracking>
-<Tracking event="unmute">http://myTrackingURL/wrapper/unmute</Tracking>
-<Tracking event="pause">http://myTrackingURL/wrapper/pause</Tracking>
-<Tracking event="resume">http://myTrackingURL/wrapper/resume</Tracking>
-<Tracking event="fullscreen">http://myTrackingURL/wrapper/fullscreen</Tracking>
-</TrackingEvents>
-</Linear>
-</Creative>
-<Creative>
-<Linear>
-<VideoClicks>
-<ClickTracking>http://myTrackingURL/wrapper/click</ClickTracking>
-</VideoClicks>
-</Linear>
-</Creative>
-<Creative AdID="602833-NonLinearTracking">
-<NonLinearAds>
-<TrackingEvents></TrackingEvents>
-</NonLinearAds>
-</Creative>
-</Creatives>
-</Wrapper>
-</Ad>
-</VAST>
+![](https://files.readme.io/f3fb3b3db01e7395d3718af2e19bd3af4e9b1bf024d0ee796b2bbfe75ecc6488-Screenshot_2026-10-05_at_5.24.40_PM.png)
 
 <br />
 
@@ -115,3 +73,5 @@ Column6<br />Column6<br />Column6
 ***
 
 Please see [IAB VAST 4.1 documentation](https://iabtechlab.com/wp-content/uploads/2018/11/VAST4.1-final-Nov-8-2018.pdf) for more information on supporting VAST's standardized macros.
+
+<br />
