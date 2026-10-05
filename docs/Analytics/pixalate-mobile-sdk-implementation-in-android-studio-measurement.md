@@ -4,8 +4,8 @@ excerpt: >-
   A guide to integrate Pixalate's light-weight impression library for mobile SDK
   implementation in Android Studio. This library facilitates the construction
   and sending of impression URLs with the key values needed by Pixalate for IVT
-  measurement. These SDKs can be utilized by clients but they are not supported
-  or maintained any longer. 
+  measurement. The SDK can be utilized by clients but it is not supported or
+  maintained any longer. 
 deprecated: false
 hidden: false
 metadata:
