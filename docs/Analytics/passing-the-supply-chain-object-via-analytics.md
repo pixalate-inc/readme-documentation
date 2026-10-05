@@ -1,6 +1,8 @@
 ---
-title: "Passing the Supply Chain Object via Analytics"
-excerpt: "The purpose of the document is to explain how to pass Supply chain Object in tag via kv55"
+title: Passing the Supply Chain Object via Analytics
+excerpt: >-
+  The purpose of the document is to explain how to pass Supply chain Object in
+  tag via kv55
 deprecated: false
 hidden: false
 metadata:
@@ -8,24 +10,23 @@ metadata:
   description: ''
   robots: index
 ---
-
 **Tag**
 
 The value can be passed in kv55, if kv55 is not already in the tag provided by Pixalate, please add it in as follows
 
-kv55=[SupplyChainObject]
+kv55=\[SupplyChainObject]
 
 **Example JS Tag with kv55**
 
-``
+<script type="text/javascript" src="https://q.adrta.com/s/[CLIENT_ID]/aa.js?cb=[CACHEBUSTER]#[CLIENT_ID];paid=[PARTNER_ID];avid=[ADVERTISER_ID];publisherId=[PUBLISHER_ID];kv55=[SupplyChainObject];kv24=[SUPPLY_TYPE]"></script>
 
 **Example** **1x1 Tag with kv55**
 
-`https://adrta.com/i?clid=[CLIENTID]&paid;=[PARTNER_ID]&avid;=[ADVERTISER_ID]&publisherId;=[PUBLISHER_ID]&**kv55=[SupplyChainObject]** &kv24;=[SUPPLY_TYPE]`
+`'https://adrta.com/i?clid=[CLIENTID]&paid=[PARTNER_ID]&avid=[ADVERTISER_ID]&publisherId=[PUBLISHER_ID]&kv55=[SupplyChainObject]&kv24=[SUPPLY_TYPE]'`
 
 **Format**
 
-\- [SupplyChainObject] should be replaced by a serialized value
+\- \[SupplyChainObject] should be replaced by a serialized value
 
 The serialization value is composed of two items;
 
@@ -35,9 +36,9 @@ The serialization value is composed of two items;
 
 These two items are separated by a bang (“!”) character.
 
-SupplyChainObject}!{SupplyChainNode array}
+SupplyChainObject\}!{SupplyChainNode array}
 
-**\- Properties**
+**- Properties**
 
 There are two properties
 
@@ -49,7 +50,7 @@ These two values must be included and separated by ‘,’
 
 ver,complete
 
-**\- Order Of Node Properties**
+**- Order Of Node Properties**
 
 If there are more than one node then each node is also separated by bang (‘!’) character.
 
@@ -57,15 +58,15 @@ asi,sid,hp,rid,name,domain,ext
 
 **Example of Multiple Hops with all the properties supplied**
 
-**"schain" : {**
+**"schain" : \{**
 
 **"ver": "1.0",**
 
 **"complete" : 1,**
 
-**"nodes" : [**
+**"nodes" : \[**
 
-**{**
+**\{**
 
 **"asi":"exchange1.com",**
 
@@ -79,9 +80,9 @@ asi,sid,hp,rid,name,domain,ext
 
 **"domain":"publisher.com"**
 
-**},**
+**\},**
 
-**{**
+**\{**
 
 **"asi":"exchange2.com",**
 
@@ -95,14 +96,16 @@ asi,sid,hp,rid,name,domain,ext
 
 **"domain":"intermediary.com"**
 
-**}**
+**\}**
 
 **]**
 
-**}**
+**\}**
 
 **1.0,1!exchange1.com,1234,1,bid-request-1,publisher,publisher.com!exchange2.com,abcd,1**
 
 **,bid-request2,intermediary,intermediary.com**
 
 The last node should be the client’s ID/info and is expected to be added before passing in kv55, if not already in the serialized value.
+
+<br />
