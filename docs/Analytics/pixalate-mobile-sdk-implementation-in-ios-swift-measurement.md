@@ -1,6 +1,11 @@
 ---
-title: "Pixalate Mobile SDK Implementation in iOS Swift (Measurement)"
-excerpt: "A guide to integrate Pixalate's light-weight impression library for mobile SDK implementation in your iOS app. This library facilitates the construction and sending of impression URLs with the key values needed by Pixalate for IVT measurement."
+title: Pixalate Mobile SDK Implementation in iOS Swift (Measurement)
+excerpt: >-
+  A guide to integrate Pixalate's light-weight impression library for mobile SDK
+  implementation in your iOS app. This library facilitates the construction and
+  sending of impression URLs with the key values needed by Pixalate for IVT
+  measurement. The SDK can be utilized by clients but it is not supported or
+  maintained any longer. 
 deprecated: false
 hidden: false
 metadata:
