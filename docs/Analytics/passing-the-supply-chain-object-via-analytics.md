@@ -102,6 +102,8 @@ asi,sid,hp,rid,name,domain,ext
 
 **\}**
 
+Serialized value:
+
 **1.0,1!exchange1.com,1234,1,bid-request-1,publisher,publisher.com!exchange2.com,abcd,1**
 
 **,bid-request2,intermediary,intermediary.com**
