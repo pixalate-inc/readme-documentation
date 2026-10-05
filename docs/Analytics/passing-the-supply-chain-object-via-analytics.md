@@ -12,7 +12,7 @@ metadata:
 ---
 **Tag**
 
-The value can be passed in kv55, if kv55 is not already in the tag provided by Pixalate, please add it in as follows
+The value for the Supply Chain Object (SCO) in serialized form can be passed in "kv55". If kv55 is not already in the tag provided by Pixalate, please add it in as follows
 
 kv55=\[SupplyChainObject]
 
