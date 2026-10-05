@@ -40,35 +40,19 @@ The Pixalate 1x1 tracking pixel, which will be provided during the integration p
 
 Example Non-Linear VPAID
 
-xmlns:xsi="[http://www.w3.org/2001/XMLSchema-instance](http://www.w3.org/2001/XMLSchema-instance)" xsi:noNamespaceSchemaLocation="vast.xsd" version="3.0">
+![](https://files.readme.io/90a5baca358941d753f103ec1cc648a483a5ba1b1aaaf06eae0be6cb040b8865-Screenshot_2026-10-05_at_5.31.02_PM.png)
 
-NonLinear VPAID JS<br />Vpaid Linear Video Ad<br />[http://www.example.com/error](http://www.example.com/error)<br />{PIXALATE TRACKING PIXEL}
+<br />
 
-[http://www.example.com/start](http://www.example.com/start)<br />[http://www.example.com/firstQuartile](http://www.example.com/firstQuartile)<br />[http://www.example.com/midpoint](http://www.example.com/midpoint)<br />[http://www.example.com/thirdQuartile](http://www.example.com/thirdQuartile)<br />[http://www.example.com/complete](http://www.example.com/complete)<br />[http://www.example.com/mute](http://www.example.com/mute)<br />[http://www.example.com/rewind](http://www.example.com/rewind)<br />[http://www.example.com/pause](http://www.example.com/pause)<br />[http://www.example.com/resume](http://www.example.com/resume)<br />[http://www.example.com/fullscreen](http://www.example.com/fullscreen)<br />[http://www.example.com/creativeView](http://www.example.com/creativeView)<br />[http://www.example.com/acceptInvitation](http://www.example.com/acceptInvitation)
+NonLinear VPAID JS
+
+![](https://files.readme.io/9225669660847079a78279c978334b099dfa71bc2f89374bf629161936522b69-Screenshot_2026-10-05_at_5.36.51_PM.png)
+
+<br />
 
 ***
-
-Example Linear VPAID
-
-xmlns:xsi="[http://www.w3.org/2001/XMLSchema-instance](http://www.w3.org/2001/XMLSchema-instance)" xsi:noNamespaceSchemaLocation="vast.xsd" version="3.0">
-
-GDFP<br />Linear VPAID<br />Vpaid Linear Video Ad<br />[http://www.example.com/error](http://www.example.com/error)<br />{PIXALATE TRACKING PIXEL}
-
-00:00:13
-
-[http://www.example.com/start](http://www.example.com/start)<br />[http://www.example.com/firstQuartile](http://www.example.com/firstQuartile)<br />[http://www.example.com/midpoint](http://www.example.com/midpoint)<br />[http://www.example.com/thirdQuartile](http://www.example.com/thirdQuartile)<br />[http://www.example.com/complete](http://www.example.com/complete)<br />[http://www.example.com/mute](http://www.example.com/mute)<br />[http://www.example.com/unmute](http://www.example.com/unmute)<br />[http://www.example.com/rewind](http://www.example.com/rewind)<br />[http://www.example.com/pause](http://www.example.com/pause)<br />[http://www.example.com/resume](http://www.example.com/resume)<br />[http://www.example.com/fullscreen](http://www.example.com/fullscreen)<br />[http://www.example.com/creativeView](http://www.example.com/creativeView)<br />[http://www.example.com/acceptInvitation](http://www.example.com/acceptInvitation)
-
-[http://wikipedia.com](http://wikipedia.com)<br />[http://www.example.com/click](http://www.example.com/click)
 
 [http://ryanthompson591.github.io/vpaidExamples/examples/VpaidCallbackAd.js](http://ryanthompson591.github.io/vpaidExamples/examples/VpaidCallbackAd.js)
-
-***
-
-Example of VAST XML Response
-
-Column6<br />Column6<br />Column6
-
-00:00:20
 
 ***
 
