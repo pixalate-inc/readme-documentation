@@ -142,13 +142,13 @@ For examples of Pixalate tags with KV55, please see [this page](https://www.pixa
 
 For more information about the IAB's OpenRTB SCO specifications, please visit[ this page](https://github.com/InteractiveAdvertisingBureau/openrtb/blob/master/supplychainobject.md).
 
-\*\*<br />Format\*\*
+\*\*Format\*\*
 
 * \[SupplyChainObject] should be replaced by a serialized value
 
 The serialization value is composed of two items;
 
-* * The SupplyChainObject properties
+* The SupplyChainObject properties
 * SupplyChainNode array
 
 These two items are separated by a bang (“!”) character:
@@ -161,7 +161,7 @@ These two items are separated by a bang (“!”) character:
   * Version
   * Complete
 
-These two values must be included and separated by ‘,’:
+These two values must be included and separated by ‘,’ :
 
 > ver,complete
 
