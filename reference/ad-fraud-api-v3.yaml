@@ -1,0 +1,427 @@
+openapi: 3.1.0
+info:
+  title: Ad Fraud API v3
+  version: 3.0.0
+  description: >
+    The Ad Fraud API returns the real-time probability of invalid traffic (IVT)
+    and the
+
+    types of IVT associated with an IP address, device ID or user agent, so you
+    can decide
+
+    whether it's compromised before you bid on, serve or pay for an impression.
+    Each lookup
+
+    draws on Pixalate's continuously updated fraud intelligence across mobile,
+    CTV and web,
+
+    so you can block bad actors with thresholds that fit your own supply and
+    risk tolerance.
+
+
+    Undocumented fields in the response can change without notice.
+
+
+    ## Usage guidelines
+
+
+    ### Make a fraud query
+
+
+    Send an IP address, device ID or user agent to get the probability of fraud
+    and the
+
+    associated risk types. You can send any combination of ip, deviceId and
+    userAgent. If
+
+    you send more than one, probability reflects the combined risk of all the
+    values you
+
+    sent, based on each one's individual probability. riskTypes lists the risk
+    types
+
+    associated with all of the values you sent during the look-back period, so
+    it can
+
+    contain more than one code.
+
+
+    ### Block with probability thresholds
+
+
+    Pixalate's proprietary machine-learning algorithm calculates the
+    probability, so you can
+
+    set your own blocking threshold based on the quality and scale of your
+    supply inventory.
+
+    As a guide:
+
+
+    * Probability equal to 1.0: you filter out only the worst offenders
+    (deterministic).
+
+    * Probability greater than or equal to 0.90: you filter out users who are
+    fraudulent
+      beyond a reasonable doubt.
+    * Probability between 0.75 (inclusive) and 0.90 (exclusive): you filter out
+    users with
+      clear and convincing evidence of fraud.
+    * Probability between 0.5 (inclusive) and 0.75 (exclusive): you filter out
+    users who are
+      more likely than not fraudulent.
+    * Probability 0: the value isn't flagged as fraudulent by Pixalate's fraud
+    intelligence
+      system.
+    * Probability -1: the value you sent is whitelisted by Pixalate. Only a
+    small number of
+      IP addresses and device IDs are whitelisted, so you'll rarely see this value.
+
+    We don't recommend blocking any probability below 0.5. If you adjust your
+    threshold,
+
+    check impression delivery regularly, because lowering the threshold can
+    reduce
+
+    impression counts.
+
+
+    ### Explain, report and block with risk types
+
+
+    Risk types tell you the reason an IP, device ID or user agent is flagged for
+    fraud. You
+
+    can also use them in blocking rules, on their own or together with a
+    probability
+
+    threshold.
+
+
+    Each risk type has a designated four-digit code. Codes follow the format T C
+    NN: T is
+
+    the IVT class (1 = GIVT, 2 = SIVT), C is the category within that class, and
+    NN is the
+
+    type within that category. For example, 2201 = Invalid Proxy Traffic (IVT
+    type), in the
+
+    SIVT class and False Representation category. You can block at any level:
+    all SIVT
+
+    (2xxx), one category (25xx) or a single type (2502).
+
+
+    For the full list of risk type codes, names and definitions, see
+
+    [Pixalate's IVT Taxonomy
+    2.0](https://www.pixalate.com/knowledgebase/pixalates-ivt-taxonomy-2.0).
+  contact:
+    name: Pixalate, Inc.
+    url: https://www.pixalate.com
+    email: support@pixalate.com
+  x-logo:
+    url: >-
+      https://cdn.pixalate.com/app-navigation/assets/images/pixalate-logo-red.svg
+    backgroundColor: '#FFFFFF'
+    altText: Pixalate, Inc.
+servers:
+  - url: https://fraud-api.pixalate.com/api/v3
+    description: Pixalate API endpoint version 3.
+security:
+  - ApiKey: []
+tags:
+  - name: Fraud
+paths:
+  /fraud:
+    get:
+      operationId: getFraudV3
+      summary: Retrieve fraud risks
+      description: >
+        Returns the probability of fraud and the associated risk types for a
+        specific IP
+
+        address, device ID or user agent.
+
+
+        **If you don't send an IP address, device ID or user agent, the API
+        returns your
+
+        quota metadata instead. See the `Metadata` schema.**
+      tags:
+        - Fraud
+      parameters:
+        - $ref: '#/components/parameters/ip'
+        - $ref: '#/components/parameters/deviceId'
+        - $ref: '#/components/parameters/userAgent'
+        - $ref: '#/components/parameters/pretty'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        5XX:
+          $ref: '#/components/responses/ServerError'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: >
+        Authentication and authorization are achieved by supplying your Pixalate
+        provided API key in the request's header.
+
+        An API key may be obtained by signing up for an account on the [Pixalate
+        developer website](https://developer.pixalate.com).
+  parameters:
+    ip:
+      name: ip
+      description: The IP address to look up. Accepts IPv4 and IPv6 addresses.
+      in: query
+      required: false
+      schema:
+        type: string
+      examples:
+        ipv4:
+          summary: IPv4
+          value: 203.0.113.24
+        ipv6:
+          summary: IPv6
+          value: 2001:db8:85a3::8a2e:370:7334
+    deviceId:
+      name: deviceId
+      description: >-
+        The hardware identifier of the mobile or CTV device to look up. See the
+        `DeviceId` schema for accepted ID types.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/DeviceId'
+      examples:
+        adid:
+          summary: ADID (Android)
+          value: FF67345D-BF11-7823-1111-FFED421776FC
+        idfa:
+          summary: IDFA (iOS)
+          value: A217D9FC-C1BE-4BEF-94CD-1EE82147C1AA
+        rida:
+          summary: RIDA (Roku OS)
+          value: 331319d2-4cc2-51ac-de21-aa62f1e143c1
+        msai:
+          summary: MSAI (Xbox)
+          value: bc23c3de-5d32-4d0c-de3a-94ce878a0379
+        waid:
+          summary: WAID (Windows)
+          value: 97615775-57b5-4300-90b4-ba0c22b60e34
+        md5:
+          summary: MD5 hash
+          value: d9527b5207097c5770ca448322489426
+        sha1:
+          summary: SHA-1 hash
+          value: 2971074629cc8f33146c5eb08b39f157da5ce356
+    userAgent:
+      name: userAgent
+      description: >-
+        The user agent string sent by the browser or device. URL-encode the
+        value.
+      in: query
+      required: false
+      schema:
+        type: string
+      examples:
+        mobile:
+          summary: Mobile browser
+          value: >-
+            Mozilla/5.0 (Linux; Android 13; SM-S911B) AppleWebKit/537.36 (KHTML,
+            like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36
+        desktop:
+          summary: Desktop browser
+          value: >-
+            Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+            like Gecko) Chrome/120.0.0.0 Safari/537.36
+        ctv:
+          summary: CTV device (Roku)
+          value: Roku/DVP-12.0 (12.0.0.4182-88)
+    pretty:
+      name: pretty
+      in: query
+      required: false
+      description: Returns pretty JSON if true. Default is false.
+      schema:
+        type: boolean
+        default: false
+  schemas:
+    DeviceId:
+      type: string
+      description: >
+        The hardware identifier of a mobile or CTV device. Accepted ID types:
+
+
+        - **ADID** (Android): Google advertising ID, 36 characters (e.g.,
+          FF67345D-BF11-7823-1111-FFED421776FC)
+        - **IDFA** (iOS): Apple advertising ID, 36 characters (e.g.,
+          A217D9FC-C1BE-4BEF-94CD-1EE82147C1AA)
+        - **MD5** (Multiple): MD5 hash of a hardware device identifier (e.g.,
+        MAC address,
+          IMEI or advertising ID), 32 characters (e.g., d9527b5207097c5770ca448322489426)
+        - **SHA1** (Multiple): SHA-1 hash of a hardware device identifier (e.g.,
+        MAC address,
+          IMEI or advertising ID), 40 characters (e.g., 2971074629cc8f33146c5eb08b39f157da5ce356)
+        - **WAID** (Windows): Windows advertising ID, 36 characters (e.g.,
+          97615775-57b5-4300-90b4-ba0c22b60e34)
+        - **RIDA** (Roku OS): Roku's privacy-friendly device ID, 36 characters
+        (e.g.,
+          331319d2-4cc2-51ac-de21-aa62f1e143c1)
+        - **MSAI** (Xbox): Advertising ID for Microsoft's Xbox, 36 characters
+        (e.g.,
+          bc23c3de-5d32-4d0c-de3a-94ce878a0379)
+    Metadata:
+      type: object
+      description: >-
+        Your account's quota status. Returned when you don't send an IP address,
+        device ID or user agent.
+      properties:
+        used:
+          type: integer
+          description: The number of requests you've used in the current quota period.
+        limit:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            The number of requests available in each quota period. null if your
+            plan is unlimited.
+        available:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            The number of requests you have left in the current quota period.
+            null if your plan is unlimited.
+        unlimited:
+          type: boolean
+          description: >-
+            true if your plan has no request limit. When true, limit, available
+            and expiry are null.
+        interval:
+          type: integer
+          description: >-
+            The number of time units in each quota period. For example, 30 with
+            a timeUnit of day means a 30-day period.
+        timeUnit:
+          type: string
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+          description: The time unit for the quota period.
+        expiry:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: >-
+            When the quota resets to the limit, in *YYYY-MM-DDTHH:MM:SS.SSSZ*
+            format. null if your plan is unlimited.
+    FraudInfo:
+      type: object
+      description: The result of a lookup for an IP address, device ID or user agent.
+      required:
+        - probability
+        - riskTypes
+      properties:
+        probability:
+          type: number
+          maximum: 1
+          description: >-
+            The probability that the lookup value is associated with fraud or
+            invalid traffic, up to 1.0. 0 means the lookup isn't flagged for
+            fraud by Pixalate's fraud intelligence system. -1 means the value
+            you sent is whitelisted. If you send more than one lookup parameter,
+            this reflects the combined risk of all the values you sent, based on
+            each one's individual probability.
+        riskTypes:
+          type:
+            - array
+            - 'null'
+          items:
+            type: integer
+          minItems: 1
+          uniqueItems: true
+          description: >
+            The risk type codes associated with the lookup values during the
+            look-back
+
+            period. Can contain more than one code. null if the probability is 0
+            or -1, or
+
+            if no risk type is available for a flagged value. Never an empty
+            array. Each code
+
+            is a four-digit integer that maps to an IVT type in
+
+            [Pixalate's IVT Taxonomy
+            2.0](https://www.pixalate.com/knowledgebase/pixalates-ivt-taxonomy-2.0),
+
+            which lists every code with its name and definition.
+  responses:
+    OK:
+      description: OK
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/FraudInfo'
+              - $ref: '#/components/schemas/Metadata'
+          examples:
+            flagged:
+              summary: Flagged, with two risk types
+              value:
+                probability: 0.92
+                riskTypes:
+                  - 2502
+                  - 2201
+            combined:
+              summary: Multiple values sent, risk types from both
+              value:
+                probability: 0.994
+                riskTypes:
+                  - 2205
+                  - 2202
+                  - 2207
+            notFlagged:
+              summary: Not flagged
+              value:
+                probability: 0
+                riskTypes: null
+            whitelisted:
+              summary: Whitelisted
+              value:
+                probability: -1
+                riskTypes: null
+            metadata:
+              summary: No lookup parameters sent (quota metadata)
+              value:
+                used: 5000
+                limit: 10000
+                available: 5000
+                unlimited: false
+                interval: 30
+                timeUnit: day
+                expiry: '2026-11-13T00:00:00.000Z'
+    BadRequest:
+      description: Bad Request - Invalid parameters in request.
+    Forbidden:
+      description: Forbidden - Rate plan expired or quota has been exhausted.
+    ServerError:
+      description: Server Error - The API experienced an internal error. Contact support.
+    Unauthorized:
+      description: Unauthorized - Invalid API Key.
