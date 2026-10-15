@@ -87,6 +87,3 @@ Waiting fixes the first and does not fix the second.
 
 Usage is measured and charged per your agreement. Check your specific allowance with your
 account manager.
-
-*Reviewer note, not for publication: pricing is not decided and this section deliberately
-carries no figures. It needs replacing with the agreed model before launch.*

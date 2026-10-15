@@ -152,13 +152,3 @@ Ask your assistant:
 If you get report names back, you are connected and your account is enabled. An empty tool list
 after a successful sign in means your account has not been enabled yet, which your Pixalate
 account manager can arrange.
-
-*Reviewer note, not for publication: the client tables above are generated from the shared
-source, `mcp-site/src/clients.json`, by `_gen_clients.py`. Do not hand-edit them. Send changes to
-the website agent, who owns that file, and regenerate.*
-
-*Sourcing: every client in the shared source is currently unverified, meaning nobody has tested
-the connection against a live client. Rather than repeating the agreed sentence in 28 table
-rows, it is stated once above the tables and each row links the vendor documentation it came
-from. Confirm with the website agent that this satisfies the identical-surfaces requirement,
-since their cards carry it per client.*
