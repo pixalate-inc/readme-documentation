@@ -79,7 +79,7 @@ The complete list of Pixalate's [MRC Accredited Metrics](https://www.pixalate.co
 
   * [MRC Accredited Measurement Areas](https://info.pixalate.com/mrc-accreditation-areas)
 
-  * [](https://pixalate.atlassian.net/wiki/spaces/CSP/pages/906788936/MRC+Accredited+Metrics)[MRC Accredited Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-metrics)[](https://pixalate.atlassian.net/wiki/spaces/CSP/pages/906788936/MRC+Accredited+Metrics)
+  * [MRC Accredited Metrics](/docs/mrc-accredited-metrics)
 
   * [MRC Accredited Server-Side Ad Insertion (SSAI) Measurement Metrics](https://www.pixalate.com/knowledgebase/mrc-accredited-server-side-ad-insertion-ssai-measurement-metrics)[*****](https://blog.pixalate.com/mrc-accreditation-connected-tv-ctv-ott-ssai-measurement-metrics)
 

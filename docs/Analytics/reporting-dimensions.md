@@ -34,7 +34,7 @@ Supply Type | The type of inventory/supply (e.g., desktop display, mobile web vi
 Fraud Type | The fraud types are calculated based on the worst fraudulent activity that each IP has performed globally. This might product cases where click fraud is evident, without the client having implemented any Pixalate click trackers.  
 Creative Type | The type of ad creative measured (i.e., display, video).  
 Video Play Status | The type of video player configuration/integration (i.e., auto-play, click-to-play, continuous play), set/passed at a creative/video player level.  
-IPv6 Type | The type of IPv6 associated to measured ad traffic. Refer to the [IPv6 Types](http://pixalate.atlassian.net/wiki/spaces/CSP/pages/652738591/IPv6+Types) page for additional information.  
+IPv6 Type | The type of IPv6 associated to measured ad traffic. Refer to the [IPv6 Types](/docs/ipv6-types) page for additional information.  
 **User Location**  
 City | The name of the city associated to measured ad traffic at a user level.  
 Country Name | The name of the country associated to measured ad traffic at a user level.  
