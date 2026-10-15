@@ -31,14 +31,13 @@ info:
     Send an IP address, device ID or user agent to get the probability of fraud
     and the
 
-    associated risk types. You can send any combination of ip, deviceId and
-    userAgent. If
+    associated risk types. You can send any combination of `ip`, `deviceId` and
+    `userAgent`. If
 
-    you send more than one, probability reflects the combined risk of all the
+    you send more than one, `probability` reflects the combined risk of all the
     values you
 
-    sent, based on each one's individual probability. riskTypes lists the risk
-    types
+    sent. `riskTypes` lists the risk types
 
     associated with all of the values you sent during the look-back period, so
     it can
@@ -132,7 +131,7 @@ servers:
 security:
   - ApiKey: []
 tags:
-  - name: Fraud
+  - name: Retrieve Fraud Risks
 paths:
   /fraud:
     get:
@@ -145,12 +144,12 @@ paths:
         address, device ID or user agent.
 
 
-        **If you don't send an IP address, device ID or user agent, the API
+        If you don't send an IP address, device ID or user agent, the API
         returns your
 
-        quota metadata instead. See the `Metadata` schema.**
+        quota metadata instead. See the `Metadata` schema.
       tags:
-        - Fraud
+        - Retrieve Fraud Risks
       parameters:
         - $ref: '#/components/parameters/ip'
         - $ref: '#/components/parameters/deviceId'
@@ -346,8 +345,7 @@ components:
             invalid traffic, up to 1.0. 0 means the lookup isn't flagged for
             fraud by Pixalate's fraud intelligence system. -1 means the value
             you sent is whitelisted. If you send more than one lookup parameter,
-            this reflects the combined risk of all the values you sent, based on
-            each one's individual probability.
+            this reflects the combined risk of all the values you sent.
         riskTypes:
           type:
             - array
