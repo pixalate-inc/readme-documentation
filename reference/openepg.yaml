@@ -3,21 +3,6 @@ info:
   title: OpenEPG Enrichment API
   version: 1.0.0-draft.2
   description: >
-    This description is DERIVED from the OpenEPG Enrichment Service
-    specification
-
-    (docs/confluence/Specification/ in the epg-enrichment-api repository), which
-    is authoritative for all
-
-    behavior. This document owns schema-level detail — full schemas, examples,
-    and status codes —
-
-    that the specification does not descend to. Where the two disagree on
-    behavior, the
-
-    specification is correct and this document has a defect.
-
-
     Resolves CTV ad opportunities to the channel and program being watched,
     returning show
 
@@ -157,8 +142,7 @@ info:
     targets. |
 
     | Availability | 99.9% monthly excluding scheduled maintenance (GA target);
-    the beta sandbox runs on internal targets without a contractual availability
-    SLA. |
+    the beta sandbox has no contractual availability SLA. |
 
     | Degradation | Fail closed: 503 with `Retry-After`, never a false miss. |
 
